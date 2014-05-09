@@ -1,0 +1,90 @@
+A51 MACRO ASSEMBLER  MAIN_8LED                                                            03/06/2002 22:45:45 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN C:\ISP'S\ISP\SP_ISP\BIN\DEBUG\main_8led.obj
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE main_8led.asm SET(SMALL) DEBUG OBJECT(C:\ISP'S\ISP\SP_ISP\BIN\DEBUG\main_
+                      8led.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;$include (DELAY.ASM)
+                +1     2     DELAY_ROUTINES SEGMENT CODE
+----            +1     3     RSEG DELAY_ROUTINES
+0000            +1     4     DELAY1MS:
+0000 7EFF       +1     5     MOV R6,#255
+0002 DEFE       +1     6     DJNZ R6,$
+0004 7EF2       +1     7     MOV R6,#242
+0006 DEFE       +1     8     DJNZ R6,$
+0008 22         +1     9     RET
+0009            +1    10     DELAY100MS:
+0009 7F63       +1    11     MOV R7,#99
+000B            +1    12     L1:
+000B 1100     F +1    13     ACALL DELAY1MS
+000D DFFC       +1    14     DJNZ R7,L1
+000F 7FFF       +1    15     MOV R7,#255
+0011 DFFE       +1    16     DJNZ R7,$
+0013 7F8E       +1    17     MOV R7,#142
+0015 DFFE       +1    18     DJNZ R7,$
+0017 00         +1    19     NOP
+0018 22         +1    20     RET
+                +1    21     
+                      22     
+  00A0                23     LEDS EQU P2
+----                  24     CSEG AT 0
+0000                  25     MAIN:
+0000 1100     F       26     ACALL DELAY100MS
+0002 1100     F       27     ACALL DELAY100MS
+0004 1100     F       28     ACALL DELAY100MS
+0006 1100     F       29     ACALL DELAY100MS
+0008 1100     F       30     ACALL DELAY100MS
+000A 1100     F       31     ACALL DELAY100MS
+000C 1100     F       32     ACALL DELAY100MS
+000E 74FE             33     MOV A,#0FEH
+0010 7C08             34     MOV R4,#8
+0012                  35     AGAIN:
+0012 F5A0             36     MOV LEDS,A
+0014 1100     F       37     ACALL DELAY100MS
+0016 1100     F       38     ACALL DELAY100MS
+0018 1100     F       39     ACALL DELAY100MS
+001A 1100     F       40     ACALL DELAY100MS
+001C 1100     F       41     ACALL DELAY100MS
+001E 23               42     RL A
+001F DCF1             43     DJNZ R4,AGAIN
+0021 75A0FF           44     MOV LEDS,#0FFH
+0024 1100     F       45     ACALL DELAY100MS
+0026 1100     F       46     ACALL DELAY100MS
+0028 1100     F       47     ACALL DELAY100MS
+002A 1100     F       48     ACALL DELAY100MS
+002C 1100     F       49     ACALL DELAY100MS
+002E 1100     F       50     ACALL DELAY100MS
+0030 7455             51     MOV A,#055H
+0032                  52     AGAIN1:
+0032 F5A0             53     MOV LEDS,A
+0034 1100     F       54     ACALL DELAY100MS
+0036 F4               55     CPL A
+0037 80F9             56     SJMP AGAIN1
+                      57     END
+A51 MACRO ASSEMBLER  MAIN_8LED                                                            03/06/2002 22:45:45 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   0012H   A   
+AGAIN1 . . . . . .  C ADDR   0032H   A   
+DELAY100MS . . . .  C ADDR   0009H   R   SEG=DELAY_ROUTINES
+DELAY1MS . . . . .  C ADDR   0000H   R   SEG=DELAY_ROUTINES
+DELAY_ROUTINES . .  C SEG    0019H       REL=UNIT
+L1 . . . . . . . .  C ADDR   000BH   R   SEG=DELAY_ROUTINES
+LEDS . . . . . . .  D ADDR   00A0H   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

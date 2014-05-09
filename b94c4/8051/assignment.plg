@@ -1,0 +1,50 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+V:\8051\assignment.uv2
+Project File Date:  11/17/2013
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling delay.c...
+compiling mouth.c...
+MOUTH.C(47): error C141: syntax error near ''
+compiling lcd.c...
+Target not created
+Build target 'Target 1'
+compiling delay.c...
+compiling mouth.c...
+compiling lcd.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FLOAT_LCD?LCD
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _STR_LCD
+    MODULE:  mouth.obj (MOUTH)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _STR_LCD
+    MODULE:  mouth.obj (MOUTH)
+    ADDRESS: 0432H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _STR_LCD
+    MODULE:  mouth.obj (MOUTH)
+    ADDRESS: 04D3H
+Program Size: data=35.0 xdata=0 code=1646
+"assignment" - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+compiling delay.c...
+compiling mouth.c...
+compiling lcd.c...
+LCD.C(64): error C141: syntax error near '/'
+Target not created
+Build target 'Target 1'
+compiling delay.c...
+compiling mouth.c...
+compiling lcd.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UINT_LCD?LCD
+Program Size: data=28.0 xdata=0 code=983
+"assignment" - 0 Error(s), 1 Warning(s).

@@ -1,0 +1,13 @@
+"delay.obj",
+"functions.obj",
+"i2ctest.obj",
+"irtest.obj",
+"keypadtest.obj",
+"lcdtest.obj",
+"ledtest.obj",
+"sevensegtest.obj",
+"switchtest.obj",
+"uart.obj",
+"uarttest.obj" 
+TO "MajorPjt" 
+RAMSIZE(256) 

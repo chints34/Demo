@@ -1,0 +1,36 @@
+C51 COMPILER V7.08   P_TO_S_MAIN_BIT_                                                      11/15/2013 10:37:26 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE P_TO_S_MAIN_BIT_
+OBJECT MODULE PLACED IN p_to_s_main(bit).OBJ
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE p_to_s_main(bit).c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include"74hc165.h"
+*** WARNING C318 IN LINE 2 OF p_to_s_main(bit).c: can't open file '74hc165.h'
+   3          main()
+   4          {
+   5   1      
+   6   1      while(1)
+   7   1      {
+   8   2      P1=read_74hc165();
+*** WARNING C206 IN LINE 8 OF P_TO_S_MAIN(BIT).C: 'read_74hc165': missing function-prototype
+   9   2      //P1=uart_rx_read74hc165()
+  10   2      }
+  11   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      7    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

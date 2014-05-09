@@ -1,0 +1,70 @@
+A51 MACRO ASSEMBLER  LEDUSESWITCH                                                         11/15/2013 15:28:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN leduseswitch.OBJ
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE leduseswitch.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;$include (DELAY.ASM)
+                +1     2     DELAY_ROUTINES SEGMENT CODE
+----            +1     3     RSEG DELAY_ROUTINES
+                +1     4     
+0000            +1     5     DELAY1MS:
+0000 7EFF       +1     6     MOV R6,#255
+0002 DEFE       +1     7     DJNZ R6,$
+0004 7EF2       +1     8     MOV R6,#242
+0006 DEFE       +1     9     DJNZ R6,$
+0008 22         +1    10     RET
+                +1    11     
+0009            +1    12     DELAY100MS:
+0009 7F63       +1    13     MOV R7,#99
+000B            +1    14     L1:
+000B 1100     F +1    15     ACALL DELAY1MS
+000D DFFC       +1    16     DJNZ R7,L1
+000F 7FFF       +1    17     MOV R7,#255
+0011 DFFE       +1    18     DJNZ R7,$
+0013 7F8E       +1    19     MOV R7,#142
+0015 DFFE       +1    20     DJNZ R7,$
+0017 00         +1    21     NOP
+0018 22         +1    22     RET
+                +1    23     
+                      24     
+----                  25     CSEG AT 0
+  0090                26     LED EQU P1
+  00A0                27     SW BIT P2.0
+0000 E590             28     MOV A,LED
+0002                  29     BACK:
+0002 30A002           30     JNB SW,DONE
+0005 80FB             31     SJMP BACK
+0007                  32     DONE:
+0007 F4               33     CPL A
+0008 F590             34     MOV LED,A
+000A 1100     F       35     ACALL DELAY100MS
+000C 80F4             36     SJMP BACK
+                      37     END
+A51 MACRO ASSEMBLER  LEDUSESWITCH                                                         11/15/2013 15:28:49 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BACK . . . . . . .  C ADDR   0002H   A   
+DELAY100MS . . . .  C ADDR   0009H   R   SEG=DELAY_ROUTINES
+DELAY1MS . . . . .  C ADDR   0000H   R   SEG=DELAY_ROUTINES
+DELAY_ROUTINES . .  C SEG    0019H       REL=UNIT
+DONE . . . . . . .  C ADDR   0007H   A   
+L1 . . . . . . . .  C ADDR   000BH   R   SEG=DELAY_ROUTINES
+LED. . . . . . . .  D ADDR   0090H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SW . . . . . . . .  B ADDR   00A0H.0 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

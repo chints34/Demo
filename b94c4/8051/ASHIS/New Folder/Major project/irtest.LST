@@ -1,0 +1,51 @@
+C51 COMPILER V7.08   IRTEST                                                                10/12/2010 02:35:22 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE IRTEST
+OBJECT MODULE PLACED IN C:\ISP's\irtest.obj
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE irtest.c BROWSE DEBUG OBJECTEXTEND OBJECT(C:\ISP's\irtest.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include"uart.h"
+   3          sbit led=P0^0;
+   4          
+   5          //external interrupt
+   6          void ir_test()
+   7          {
+   8   1      EA=1;  //ENABLE ALL
+   9   1      EX0=1; //ENABLE EXTERNAL INTERRUPT 0.
+  10   1      print("press remote switch... and enter\n\r");
+  11   1      
+  12   1      uart_rx();
+  13   1      }
+  14          
+  15          //THIS ISR WILL BE CALLED WHEN IR-REMOTE IS PRESSED. 
+  16          //SIGNAL SENT BY IR REMOTE WILL BE CAUGHT BY THE IR-SENSOR ON THE KIT.
+  17          //IN THIS ISR WE ARE COMPLEMENTING LED.
+  18          //SO WHENEVER A INTERRUPT COMES THROUGH REMOTE THEN LED STATE IS COMPLEMENTED.
+  19          //i.e.,ON EACH BUTTON PRESS ON REMOTE THE LED WILL CHANGE ITS PREVIOUS STATE.
+  20          
+  21          void ISR_EXT(void) interrupt 0   //void ext_int0(void) interrupt 0
+  22          {
+  23   1      led=~led;
+  24   1              print("IR IS WORKING PROPERLY\n\r");
+  25   1              print("Do You want continue?(press any key to continue:-\n\r");
+  26   1               uart_rx();
+  27   1              
+  28   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     95    ----
+   CONSTANT SIZE    =    112    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

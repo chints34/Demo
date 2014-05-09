@@ -1,0 +1,56 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             RESET,CODE,READONLY
+    2 00000000                 ARM
+    3 00000000                 ENTRY
+    4 00000000         START
+    5 00000000 E3A00012        mov              r0,#0x12
+    6 00000004         
+    7 00000004 E3A01101        ldr              r1,=0x40000000
+    8 00000008 E5810000        str              r0,[r1]
+    9 0000000C E3A01111        ldr              r1,=0x40000004
+   10 00000010 E1C100B0        strh             r0,[r1]
+   11 00000014 E3A01119        ldr              r1,=0x40000006
+   12 00000018 E5C10000        strb             r0,[r1]
+   13 0000001C         HERE
+   14 0000001C EAFFFFFE        B                HERE
+   15 00000020                 END
+Command Line: --debug --xref --apcs=interwork --depend=store_ram.d -ostore_ram.
+o -IC:\Keil4\ARM\RV31\INC -IC:\Keil4\ARM\CMSIS\Include -IC:\Keil4\ARM\Inc\Phili
+ps --predefine="__EVAL SETA 1" --list=store_ram.lst store_ram.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+HERE 0000001C
+
+Symbol: HERE
+   Definitions
+      At line 13 in file store_ram.s
+   Uses
+      At line 14 in file store_ram.s
+Comment: HERE used once
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 1 in file store_ram.s
+   Uses
+      None
+Comment: RESET unused
+START 00000000
+
+Symbol: START
+   Definitions
+      At line 4 in file store_ram.s
+   Uses
+      None
+Comment: START unused
+3 symbols
+334 symbols in table

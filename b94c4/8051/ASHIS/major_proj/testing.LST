@@ -1,0 +1,224 @@
+C51 COMPILER V7.08   TESTING                                                               12/17/2013 15:55:15 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE TESTING
+OBJECT MODULE PLACED IN testing.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE testing.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          unsigned int ch,s;
+   3          unsigned int i;
+   4          sbit led1=P0^0;
+   5          sbit led2=P0^1;
+   6          sbit led3=P0^2;
+   7          sbit led4=P0^3;
+   8          sbit led5=P0^4;
+   9          sbit led6=P0^5;
+  10          sbit led7=P0^6;
+  11          sbit led8=P0^7;
+  12          sbit sw1=P2^0;
+  13          sbit sw2=P2^1;
+  14          sbit sw3=P2^2;
+  15          sbit sw4=P2^3;
+  16          sbit sw5=P2^4;
+  17          sbit sw6=P2^5;
+  18          sbit sw7=P2^6;
+  19          sbit sw8=P2^7;
+  20          
+  21          void uart_init()
+  22          {
+  23   1              SCON=0x50;
+  24   1              TMOD=0x20;
+  25   1              TH1=TL1=-3;
+  26   1              TR1=1;
+  27   1      }
+  28          void uart_tx(unsigned char c)
+  29          {
+  30   1              uart_init();
+  31   1              SBUF=c;
+  32   1              while(!TI);
+  33   1              TI=0;
+  34   1      }
+  35          unsigned char uart_rx()
+  36          {
+  37   1              while(!RI);
+  38   1              RI=0;
+  39   1              return SBUF;
+  40   1      }
+  41          void uart_str(unsigned char *p)
+  42          {
+  43   1              while(*p)
+  44   1              {
+  45   2                      uart_tx(*p++);
+  46   2              }
+  47   1      }
+  48          main()
+  49          {
+  50   1      while(1)
+  51   1      {
+  52   2              uart_str("8051 TEST KIT PROGRAM\n\r");
+  53   2              uart_str("PRESS KEY TO START TESTING....\n\r");
+  54   2              uart_str("1>LED testing\n\r");
+  55   2              uart_str("2>SWITCH testing\n\r");
+C51 COMPILER V7.08   TESTING                                                               12/17/2013 15:55:15 PAGE 2   
+
+  56   2              uart_str("3>KEYPAD testing\n\r");
+  57   2              uart_str("4>7_SEGMENT testing\n\r");
+  58   2              uart_str("5>LCD testing\n\r");
+  59   2              uart_str("6>UART testing\n\r");
+  60   2              uart_str("7>I2C testing\n\r");
+  61   2              uart_str("8>SPI testing\n\r");
+  62   2              uart_str("9>IR testing\n\r");
+  63   2      
+  64   2              ch=uart_rx();
+  65   2              
+  66   2              if(ch=='1')
+  67   2              {
+  68   3                      uart_str("make following connection\n\r");
+  69   3                      uart_str("ACTIVE LOW:P0.0 TO P0.3\n\r");
+  70   3                      uart_str("ACTIVE HIGH:P0.4 TO P0.7\n\r");
+  71   3                      P0=0xf0;
+  72   3                      uart_str("is leds working fine?\n\r");
+  73   3                      uart_str("press:Y/N(yes or no)\n\r");
+  74   3                      ch=uart_rx();
+  75   3                      if(ch=='n')
+  76   3                      {
+  77   4                              uart_str("please check for proper connection or check any programming mistake\n\r");
+  78   4                      }
+  79   3                      else
+  80   3                              uart_str("LEDS working...");
+  81   3              }
+  82   2              if(ch=='2')
+  83   2              {
+  84   3                      uart_str("make following connection\n\r");
+  85   3                      uart_str("leds:ACTIVE LOW:P0.0 TO P0.3\n\r");
+  86   3                      uart_str("     ACTIVE HIGH:P0.4 TO P0.7\n\r");
+  87   3                      uart_str("switch:ACTIVE LOW:P2.0 TO P2.3\n\r");
+  88   3                      uart_str("       ACTIVE HIGH:P2.4 TO P2.7\n\r");
+  89   3                      P0=0x0f;
+  90   3                      while(1)
+  91   3                      {
+  92   4                              uart_str("press switch 1 to 8\n\r");
+  93   4                      
+  94   4              //      led1=1;
+  95   4                      uart_str("press switch 1\n\r");
+  96   4                      if(sw1==0)
+  97   4                      {
+  98   5                              uart_str("active low switch 1 is pressed....");
+  99   5                              led1=0;
+ 100   5                              break;
+ 101   5                      }
+ 102   4                      else
+ 103   4                              uart_str("switch is not working.....");
+ 104   4                      
+ 105   4              //      led2=1;
+ 106   4                      
+ 107   4                      uart_str("press switch 2\n\r");
+ 108   4                      if(sw2==0)
+ 109   4                      {
+ 110   5                              uart_str("active low switch 2 is pressed....");
+ 111   5                              led2=0;
+ 112   5                              break;
+ 113   5                      }
+ 114   4                      else
+ 115   4                              uart_str("switch is not working.....");
+ 116   4                      
+ 117   4              //      led3=1;
+C51 COMPILER V7.08   TESTING                                                               12/17/2013 15:55:15 PAGE 3   
+
+ 118   4                      
+ 119   4                      uart_str("press switch 3\n\r");
+ 120   4                      if(sw3==0)
+ 121   4                      {
+ 122   5                              uart_str("active low switch 3 is pressed....");
+ 123   5                              led3=0;
+ 124   5                              break;
+ 125   5                      }
+ 126   4                      else
+ 127   4                              uart_str("switch is not working.....");
+ 128   4                      
+ 129   4              //      led4=1;
+ 130   4                      
+ 131   4                      uart_str("press switch 4\n\r");
+ 132   4                      if(sw4==0)
+ 133   4                      {
+ 134   5                              uart_str("active low switch 4 is pressed....");
+ 135   5                              led4=0;
+ 136   5                              break;
+ 137   5                      }
+ 138   4                      else
+ 139   4                              uart_str("switch is not working.....");
+ 140   4                      
+ 141   4      ///////////////active high///////////////
+ 142   4                      
+ 143   4              //      led5=0;
+ 144   4                      
+ 145   4                      uart_str("ACTIVE HIGH SWITCHES....\n\r");
+ 146   4                      uart_str("press switch 5\n\r");
+ 147   4                      if(sw5==0)
+ 148   4                      {
+ 149   5                              uart_str("active high switch 5 is pressed....");
+ 150   5                              led5=1;
+ 151   5                              break;
+ 152   5                      }
+ 153   4                      else
+ 154   4                              uart_str("switch is not working.....");
+ 155   4                      
+ 156   4              //      led6=0;
+ 157   4                      
+ 158   4                      uart_str("press switch 1\n\r");
+ 159   4                      if(sw6==0)
+ 160   4                      {
+ 161   5                              uart_str("active high switch 6 is pressed....");
+ 162   5                              led6=1;
+ 163   5                              break;
+ 164   5                      }
+ 165   4                      else
+ 166   4                              uart_str("switch is not working.....");
+ 167   4              
+ 168   4              //      led7=0;
+ 169   4                      
+ 170   4                      uart_str("press switch 7\n\r");
+ 171   4                      if(sw7==0)
+ 172   4                      {
+ 173   5                              uart_str("active high switch 7 is pressed....");
+ 174   5                              led7=1;
+ 175   5                              break;
+ 176   5                      }
+ 177   4                      else
+ 178   4                              uart_str("switch is not working.....");
+ 179   4                      
+C51 COMPILER V7.08   TESTING                                                               12/17/2013 15:55:15 PAGE 4   
+
+ 180   4              //      led8=0;
+ 181   4                      
+ 182   4                      uart_str("press switch 8\n\r");
+ 183   4                      if(sw8==0)
+ 184   4                      {
+ 185   5                              uart_str("active high switch 8 is pressed....");
+ 186   5                              led8=1;
+ 187   5                              break;
+ 188   5                      }
+ 189   4                      else
+ 190   4                              uart_str("switch is not working.....");
+ 191   4                      }
+ 192   3              }
+ 193   2      }
+ 194   1      }
+ 195          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    583    ----
+   CONSTANT SIZE    =   1036    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

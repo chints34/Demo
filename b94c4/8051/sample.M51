@@ -1,0 +1,48 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        10/02/2013  08:29:06  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE delay100.obj TO sample RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  delay100.obj (DELAY100)
+
+
+LINK MAP OF MODULE:  sample (DELAY100)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     000AH     ABSOLUTE     
+            CODE    000AH     0019H     UNIT         DELAY_ROUTINES
+
+
+
+SYMBOL TABLE OF MODULE:  sample (DELAY100)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DELAY100
+  C:000AH         SEGMENT       DELAY_ROUTINES
+  C:0013H         SYMBOL        DELAY100MS
+  C:000AH         SYMBOL        DELAY1MS
+  C:0015H         SYMBOL        L1
+  B:00A0H.0       SYMBOL        LED
+  C:0000H         SYMBOL        MAIN
+  D:00A0H         SYMBOL        P2
+  C:0000H         LINE#         5
+  C:0002H         LINE#         6
+  C:0004H         LINE#         7
+  C:0006H         LINE#         8
+  C:0008H         LINE#         9
+  -------         ENDMOD        DELAY100
+
+Program Size: data=8.0 xdata=0 code=35
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

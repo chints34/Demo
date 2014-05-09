@@ -1,0 +1,84 @@
+A51 MACRO ASSEMBLER  SEG1                                                                 11/17/2013 15:26:44 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN seg1.OBJ
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE seg1.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+  0080                14     SEG_2_MUX EQU P0
+  00A0                15     SEL1 BIT P2^0
+  00A1                16     SEL2 BIT P2^1
+                      17     
+                      18     LUT_SEG SEGMENT CODE
+----                  19     RSEG LUT_SEG
+                      20     
+0000 40792430         21     SEG_LUT : DB 40H,79H,24H,30H,19H,12H,02H,78H,00H,10H
+0004 19120278                
+0008 0010                    
+                      22     
+                      23     
+                      24     
+000A                  25     DISP_2_MUX_SEG:
+000A EC               26     MOV A,R4
+000B 75F00A           27     MOV B,#10
+000E 84               28     DIV AB
+000F 93               29     MOVC A,@A+DPTR
+0010 4480             30     ORL A,#80H
+0012 F580             31     MOV SEG_2_MUX,A
+0014 C2A0             32     CLR SEL1
+0016                  33     ACALL DELAY1MS
+*** _______________________________^
+*** ERROR #A45 IN 33 (seg1.asm, LINE 33): UNDEFINED SYMBOL (PASS-2)
+0018 D2A0             34     SETB SEL1
+                      35     
+001A E5F0             36     MOV A,B
+001C 93               37     MOVC A,@A+DPTR
+001D 4480             38     ORL A,#80H
+001F F580             39     MOV SEG_2_MUX,A
+0021 C2A1             40     CLR SEL2
+0023                  41     ACALL DELAY1MS
+*** _______________________________^
+*** ERROR #A45 IN 41 (seg1.asm, LINE 41): UNDEFINED SYMBOL (PASS-2)
+0025 D2A1             42     SETB SEL2
+                      43     
+0027 22               44     RET
+                      45     end
+A51 MACRO ASSEMBLER  SEG1                                                                 11/17/2013 15:26:44 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+DELAY1MS . . . . .    ----   -----       
+DISP_2_MUX_SEG . .  C ADDR   000AH   R   SEG=LUT_SEG
+LUT_SEG. . . . . .  C SEG    0028H       REL=UNIT
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SEG_2_MUX. . . . .  D ADDR   0080H   A   
+SEG_LUT. . . . . .  C ADDR   0000H   R   SEG=LUT_SEG
+SEL1 . . . . . . .  B ADDR   00A0H.0 A   
+SEL2 . . . . . . .  B ADDR   00A0H.1 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 2 ERROR(S)

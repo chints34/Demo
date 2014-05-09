@@ -1,0 +1,47 @@
+A51 MACRO ASSEMBLER  SAMPLELED2                                                           10/26/2013 10:53:55 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN sampleled2.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE sampleled2.ASM SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0090                 1     OPIN BIT P1.0
+  0091                 2     IPIN BIT P1.1
+  0000                 3     TEMP BIT 20H.0
+----                   4     CSEG AT 0
+0000                   5     MAIN:
+0000 C290              6     CLR OPIN
+0002 D290              7     SETB OPIN
+0004 B290              8     CPL OPIN
+0006 C3                9     CLR C
+0007 9290             10     MOV OPIN,C
+0009 A291             11     MOV C,IPIN
+000B 9200             12     MOV TEMP,C
+000D                  13     AGAIN:
+000D C290             14     CLR OPIN
+000F 2091FD           15     JB IPIN,$
+0012 D290             16     SETB OPIN
+0014 80F7             17     SJMP AGAIN
+                      18     END
+A51 MACRO ASSEMBLER  SAMPLELED2                                                           10/26/2013 10:53:55 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   000DH   A   
+IPIN . . . . . . .  B ADDR   0090H.1 A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+OPIN . . . . . . .  B ADDR   0090H.0 A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+TEMP . . . . . . .  B ADDR   0020H.0 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

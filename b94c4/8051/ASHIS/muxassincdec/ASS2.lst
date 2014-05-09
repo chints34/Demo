@@ -1,0 +1,170 @@
+A51 MACRO ASSEMBLER  ASS2                                                                 11/19/2013 14:38:07 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN C:\ISP'S\SP_ISP\bin\Debug\ASS2.obj
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE New Folder\ASS2.ASM SET(SMALL) DEBUG PRINT(.\ASS2.lst) OBJECT(C:\ISP'S\SP_
+                      ISP\bin\Debug\ASS2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;$include (DELAYS.ASM)
+                +1     2     DELAY_ROUTINES SEGMENT CODE
+----            +1     3     RSEG DELAY_ROUTINES
+                +1     4     
+                +1     5     ;PUBLIC DELAY1MS
+                +1     6     
+0000            +1     7     DELAY1MS:
+0000 7FFF       +1     8     MOV R7,#255
+0002 DFFE       +1     9     DJNZ R7,$
+0004 7FF2       +1    10     MOV R7,#242
+0006 DFFE       +1    11     DJNZ R7,$
+0008 22         +1    12     RET
+                +1    13     
+0009            +1    14     DELAY100MS:
+0009 7E63       +1    15     MOV R6,#99
+000B            +1    16     L1:
+000B 1100     F +1    17     ACALL DELAY1MS
+000D DEFC       +1    18     DJNZ R6,L1
+                +1    19     
+000F 7EFF       +1    20     MOV R6,#255
+0011 DEFE       +1    21     DJNZ R6,$
+                +1    22     
+0013 7E8E       +1    23     MOV R6,#142
+0015 DEFE       +1    24     DJNZ R6,$
+0017 00         +1    25     NOP
+0018 22         +1    26     RET
+                +1    27     
+0019            +1    28     DELAY1S:
+0019 7D09       +1    29     MOV R5,#9
+001B            +1    30     L2:
+001B 1100     F +1    31     ACALL DELAY100MS
+001D DDFC       +1    32     DJNZ R5,L2
+                +1    33     
+001F 7D63       +1    34     MOV R5,#99
+0021            +1    35     L3:
+0021 1100     F +1    36     ACALL DELAY1MS
+0023 DDFC       +1    37     DJNZ R5,L3
+                +1    38     
+0025 7DFF       +1    39     MOV R5,#255
+0027 DDFE       +1    40     DJNZ R5,$
+                +1    41     
+0029 7D85       +1    42     MOV R5,#133
+002B DDFE       +1    43     DJNZ R5,$
+002D 22         +1    44     RET
+                      45     
+                      46     ;$include (SEG1.ASM)
+                +1    47     
+                +1    48     
+                +1    49     
+                +1    50     
+                +1    51     
+                +1    52     
+                +1    53     
+                +1    54     
+                +1    55     
+                +1    56     
+                +1    57     
+A51 MACRO ASSEMBLER  ASS2                                                                 11/19/2013 14:38:07 PAGE     2
+
+                +1    58     
+                +1    59     
+  0080          +1    60     SEG_2_MUX EQU P0
+  00A0          +1    61     SEL1 BIT P2^0
+  00A1          +1    62     SEL2 BIT P2^1
+                +1    63     
+                +1    64     LUT_SEG SEGMENT CODE
+----            +1    65     RSEG LUT_SEG
+                +1    66     
+0000 40792430   +1    67     SEG_LUT : DB 40H,79H,24H,30H,19H,12H,02H,78H,00H,10H
+0004 19120278                
+0008 0010                    
+                +1    68     
+                +1    69     
+                +1    70     
+000A            +1    71     DISP_2_MUX_SEG:
+000A EC         +1    72     MOV A,R4
+000B 75F00A     +1    73     MOV B,#10
+000E 84         +1    74     DIV AB
+000F 93         +1    75     MOVC A,@A+DPTR
+0010 4480       +1    76     ORL A,#80H
+0012 F580       +1    77     MOV SEG_2_MUX,A
+0014 C2A0       +1    78     CLR SEL1
+0016 1100     F +1    79     ACALL DELAY1MS
+0018 D2A0       +1    80     SETB SEL1
+                +1    81     
+001A E5F0       +1    82     MOV A,B
+001C 93         +1    83     MOVC A,@A+DPTR
+001D 4480       +1    84     ORL A,#80H
+001F F580       +1    85     MOV SEG_2_MUX,A
+0021 C2A1       +1    86     CLR SEL2
+0023 1100     F +1    87     ACALL DELAY1MS
+0025 D2A1       +1    88     SETB SEL2
+                +1    89     
+0027 22         +1    90     RET
+                      91     
+  00B0                92     SW1 BIT P3^0
+  00B1                93     SW2 BIT P3^1
+----                  94     CSEG AT 0
+0000                  95     MAIN:
+0000 900000   F       96             MOV DPTR,#SEG_LUT
+0003 7C00             97             MOV R4,#00
+0005                  98     AGAIN:
+0005 1100     F       99             ACALL DISP_2_MUX_SEG
+0007 30B110          100             JNB SW2,AGAIN2
+000A 20B0F8          101             JB SW1,AGAIN
+000D 0C              102             INC R4
+000E 1100     F      103             ACALL DELAY1MS
+0010 1100     F      104             ACALL DISP_2_MUX_SEG
+                     105     
+0012 30B0FD          106             JNB SW1,$
+0015 BC3CED          107             CJNE R4,#60,AGAIN
+0018 80E6            108             SJMP MAIN
+001A 30B1FD          109     AGAIN2: JNB SW2,$
+                     110             
+001D                 111     AGAIN3: 
+001D 7BFF            112             MOV R3,#255
+001F                 113             AGAIN4:
+001F 1100     F      114                     ACALL DISP_2_MUX_SEG
+0021 DBFC            115                     DJNZ R3,AGAIN4
+0023 DCF8            116             DJNZ R4,AGAIN3
+0025 80D9            117             SJMP MAIN
+                     118     END
+A51 MACRO ASSEMBLER  ASS2                                                                 11/19/2013 14:38:07 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   0005H   A   
+AGAIN2 . . . . . .  C ADDR   001AH   A   
+AGAIN3 . . . . . .  C ADDR   001DH   A   
+AGAIN4 . . . . . .  C ADDR   001FH   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+DELAY100MS . . . .  C ADDR   0009H   R   SEG=DELAY_ROUTINES
+DELAY1MS . . . . .  C ADDR   0000H   R   SEG=DELAY_ROUTINES
+DELAY1S. . . . . .  C ADDR   0019H   R   SEG=DELAY_ROUTINES
+DELAY_ROUTINES . .  C SEG    002EH       REL=UNIT
+DISP_2_MUX_SEG . .  C ADDR   000AH   R   SEG=LUT_SEG
+L1 . . . . . . . .  C ADDR   000BH   R   SEG=DELAY_ROUTINES
+L2 . . . . . . . .  C ADDR   001BH   R   SEG=DELAY_ROUTINES
+L3 . . . . . . . .  C ADDR   0021H   R   SEG=DELAY_ROUTINES
+LUT_SEG. . . . . .  C SEG    0028H       REL=UNIT
+MAIN . . . . . . .  C ADDR   0000H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+SEG_2_MUX. . . . .  D ADDR   0080H   A   
+SEG_LUT. . . . . .  C ADDR   0000H   R   SEG=LUT_SEG
+SEL1 . . . . . . .  B ADDR   00A0H.0 A   
+SEL2 . . . . . . .  B ADDR   00A0H.1 A   
+SW1. . . . . . . .  B ADDR   00B0H.0 A   
+SW2. . . . . . . .  B ADDR   00B0H.1 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

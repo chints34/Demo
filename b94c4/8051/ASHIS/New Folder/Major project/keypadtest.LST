@@ -1,0 +1,207 @@
+C51 COMPILER V7.08   KEYPADTEST                                                            10/12/2010 02:35:22 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE KEYPADTEST
+OBJECT MODULE PLACED IN C:\ISP's\keypadtest.obj
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE keypadtest.c BROWSE DEBUG OBJECTEXTEND OBJECT(C:\ISP's\keypadtest.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include"uart.h"
+   3          unsigned char row,col;
+   4          bit flag1=0;
+   5          /*
+   6          sbit r0=P2^4;           sbit c0=P2^0;
+   7          sbit r1=P2^5;           sbit c1=P2^1;
+   8          sbit r2=P2^6;           sbit c2=P2^2;
+   9          sbit r3=P2^7;           sbit c3=P2^3;
+  10          */
+  11          sbit c0=P2^4;           sbit r0=P2^0;
+  12          sbit c1=P2^5;           sbit r1=P2^1;
+  13          sbit c2=P2^6;           sbit r2=P2^2;
+  14          sbit c3=P2^7;           sbit r3=P2^3;
+  15          
+  16          code unsigned char keypad_lut[4][4]=
+  17                                        {
+  18                                            1, 2, 3, 4,
+  19                                            5, 6, 7, 8,
+  20                                            9, 10,11,12,
+  21                                            13,14,15,16
+  22                                                                };
+  23          bit colscan()
+  24           {
+  25   1        return(c0&c1&c2&c3);
+  26   1       }
+  27          
+  28          void keypad_test()
+  29          {
+  30   1               
+  31   1             unsigned char k,h,sw;
+  32   1                 unsigned int i,j;
+  33   1              
+  34   1              r0=r1=r2=r3=0;
+  35   1          c0=c1=c2=c3=1;
+  36   1          flag1=0;
+  37   1         
+  38   1         print("You are in Keypad test...\n\r");
+  39   1        // KEY:print("Connect R0-R3 to P2.4-P2.7 and C0-C3 to P2.0-P2.3\n\r");
+  40   1        KEY:print("Connect C0-C3 to P2.4-P2.7 and R0-R3 to P2.0-P2.3\n\r");
+  41   1          
+  42   1      k1: print("Enter any key to test keypad...\n\r");
+  43   1          
+  44   1          uart_rx();
+  45   1            
+  46   1              print("press keypad switch within 100ms time\n\r");
+  47   1                
+  48   1           
+  49   1      
+  50   1              for(i=0;i<=2048;i++)
+  51   1              {
+  52   2              for(j=0;j<=1024;j++);
+  53   2          if(!colscan())
+  54   2              {
+  55   3                      flag1=1;
+C51 COMPILER V7.08   KEYPADTEST                                                            10/12/2010 02:35:22 PAGE 2   
+
+  56   3                      break;
+  57   3              }
+  58   2          
+  59   2              }       
+  60   1         
+  61   1           r0=0;
+  62   1           r1=r2=r3=1;
+  63   1            if(!colscan())
+  64   1              {
+  65   2               row=0;
+  66   2                       goto colcheck;
+  67   2                  }
+  68   1      
+  69   1           r1=0;
+  70   1           r0=r2=r3=1;
+  71   1            if(!colscan())
+  72   1             {
+  73   2              row=1;
+  74   2                      goto colcheck;
+  75   2                 }
+  76   1          
+  77   1           r2=0;
+  78   1           r0=r1=r3=1;
+  79   1            if(!colscan())
+  80   1             {
+  81   2              row=2;
+  82   2                  goto colcheck;
+  83   2                 }
+  84   1      
+  85   1           r3=0;
+  86   1           r0=r1=r2=1;
+  87   1            if(!colscan())
+  88   1             {
+  89   2              row=3;
+  90   2                 }
+  91   1      
+  92   1      colcheck:
+  93   1              if(c0==0)
+  94   1                col=0;
+  95   1      
+  96   1              if(c1==0)
+  97   1                col=1;
+  98   1      
+  99   1              if(c2==0)
+ 100   1                col=2;
+ 101   1      
+ 102   1              if(c3==0)
+ 103   1                col=3;
+ 104   1      
+ 105   1               if(flag1==1) // *
+ 106   1                {
+ 107   2                              while(!colscan());
+ 108   2                              k=keypad_lut[row][col];
+ 109   2                  
+ 110   2                              print("value of keyscan is\n\r");
+ 111   2                  uart_tx(k+48);
+ 112   2                
+ 113   2                         if(k>=1&&k<=16)
+ 114   2                 {
+ 115   3                         print("keypad scan success...\n\r");
+ 116   3                                 print("Release pressed key...\n\r");
+ 117   3                                 while(!colscan());
+C51 COMPILER V7.08   KEYPADTEST                                                            10/12/2010 02:35:22 PAGE 3   
+
+ 118   3                   KIT:  print("Do You want to continue keypad test?\n\r");
+ 119   3                         print("Enter 'y'for contiue and 'n' for exit\n\r");
+ 120   3                         j=uart_rx();
+ 121   3                         if(j=='y'||j=='Y')
+ 122   3                           {
+ 123   4                            print("continue keypad test...\n\r");
+ 124   4                                        
+ 125   4                                        goto k1;
+ 126   4                           }
+ 127   3                         else if(j=='n'||j=='N')
+ 128   3                           {
+ 129   4                            print("exiting from keypad test\n\r");
+ 130   4                            return;
+ 131   4                           }
+ 132   3                         else
+ 133   3                            {
+ 134   4                            print("Invalid choice.Tryagain!\n\r");
+ 135   4                            goto KIT;         
+ 136   4                            }
+ 137   3                  }       
+ 138   2              
+ 139   2                          else if(flag1==0)
+ 140   2                  {
+ 141   3                       SCH: print("Did you Pressed the keypad switch?(y)for Yes and (n)for No\n\r");
+ 142   3                  h=uart_rx();
+ 143   3                   if(h=='y'||h=='Y')
+ 144   3                    {
+ 145   4                      print("keypad is not working\n\r");
+ 146   4                  
+ 147   4                                  print("keypad");
+ 148   4                      sw=4*row+col;
+ 149   4                      uart_tx(sw+48);
+ 150   4                      print("is not working\n\r");
+ 151   4                 
+ 152   4                        }
+ 153   3                       else if(h=='n'||h=='N')
+ 154   3                    {
+ 155   4                                 print("NO keypad switch pressed within 100ms time\n\r");
+ 156   4                     goto KEY;
+ 157   4                    }
+ 158   3                   else
+ 159   3                    {
+ 160   4                     print("Invalid choice. try again!\n\r"); 
+ 161   4                     goto SCH;
+ 162   4                    }
+ 163   3                  }
+ 164   2      
+ 165   2                  else
+ 166   2                  {
+ 167   3                   print("Connetction problem.Check connection\n\r");
+ 168   3                   goto KEY;     
+ 169   3                          }
+ 170   2               
+ 171   2                              
+ 172   2                      }//end of *
+ 173   1       
+ 174   1           
+ 175   1               
+ 176   1                 
+ 177   1      }//end of keypadtest fn
+ 178               
+
+C51 COMPILER V7.08   KEYPADTEST                                                            10/12/2010 02:35:22 PAGE 4   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    501    ----
+   CONSTANT SIZE    =    623    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

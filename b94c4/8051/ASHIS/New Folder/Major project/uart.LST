@@ -1,0 +1,65 @@
+C51 COMPILER V7.08   UART                                                                  10/12/2010 02:35:25 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN C:\ISP's\uart.obj
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE uart.c BROWSE DEBUG OBJECTEXTEND OBJECT(C:\ISP's\uart.obj)
+
+line level    source
+
+   1          
+   2          #include<reg51.h>
+   3          //uart initialisation
+   4          void uart_init(void)
+   5           {
+   6   1        SCON=0x50;  //0101 0000 TO CHOOSE UART MODE 1 and ENABLE THE REN SO THAT UART CAN RECEIVE DATA.
+   7   1                    //[SM0 SM1 SM2 REN TB8 RB8 TI RI]
+   8   1        
+   9   1        TMOD=0x20;  //0010 0000 TO CHOOSE TIMER 1 AND MODE 2. 
+  10   1                    //[GATE C/TBAR M1 M0 | GATE C/TBAR M1 M0]
+  11   1        
+  12   1        TH1=TL1=253;//for 9600 baud rate 253(256-3) to
+  13   1        TR1=1;      //TO START TIMER 1
+  14   1        }
+  15           
+  16          //8051 KIT to hyperterminal using uart PERIPHERAL METHOD
+  17          void uart_tx(unsigned char dat)
+  18            {
+  19   1           SBUF=dat;   //KEEP DATA INTO BUFFER TO SEND
+  20   1               while(!TI); //WAIT UNTILL TX SECTION IS BUSY TRANSMITTING 8 BITS DATA. 
+  21   1                           //TI FLAG BECOMES SET i.e. 1 WHEN 8BITS DATA SENDING COMPLETED.
+  22   1               TI=0;       //THEN RESET THE TI FLAG.
+  23   1        }
+  24          
+  25          // Hyperterminal TO 8051 KIT using uart PERIPHERAL METHOD  
+  26          unsigned char uart_rx(void)
+  27            {
+  28   1         while(!RI);  //WAIT UNTILL RX SECTION IS BUSY RECEIVING 8 BITS DATA. 
+  29   1                          //RI FLAG BECOMES SET i.e. 1 WHEN 8BITS DATA RECEIVING COMPLETED. 
+  30   1           RI=0;      //THEN RESET THE RI FLAG.
+  31   1         return SBUF; //DATA RECEIVED IN BUFFER
+  32   1        }
+  33          
+  34           //PRINT FUNCTION TO DISPLAY A STRING BY 8051 KIT ON HYPERTERMINAL
+  35           void print(unsigned char *s)
+  36              {
+  37   1                 
+  38   1            while(*s)
+  39   1                 {
+  40   2                  uart_tx(*s++);
+  41   2                 }
+  42   1           }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     68    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

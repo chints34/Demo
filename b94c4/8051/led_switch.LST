@@ -1,0 +1,45 @@
+C51 COMPILER V7.08   LED_SWITCH                                                            11/13/2013 20:16:42 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE LED_SWITCH
+OBJECT MODULE PLACED IN led_switch.OBJ
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE led_switch.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          sfr p2=0xa0;
+   2          sbit sw1=p2^0;  
+   3          sbit sw2=p2^1;
+   4          sbit sw3=p2^2;
+   5          sbit sw4=p2^3;
+   6          
+   7          sbit led1=p2^4;
+   8          sbit led2=p2^5;
+   9          sbit led3=p2^6;
+  10          sbit led4=p2^7;
+  11          main()
+  12          {
+  13   1      while(1)
+  14   1      {
+  15   2      led1=sw1;
+  16   2      led2=sw2;
+  17   2      led3=sw3;
+  18   2      led4=sw4;
+  19   2      }
+  20   1      
+  21   1      
+  22   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     18    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

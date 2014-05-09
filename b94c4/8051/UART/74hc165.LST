@@ -1,0 +1,41 @@
+C51 COMPILER V7.08   74HC165                                                               11/15/2013 10:37:27 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE 74HC165
+OBJECT MODULE PLACED IN 74hc165.OBJ
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE 74hc165.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          sbit q7=P3^0;//serial in pin
+*** ERROR C202 IN LINE 1 OF 74HC165.C: 'P3': undefined identifier
+   2          sbit clk=P3^1;
+*** ERROR C202 IN LINE 2 OF 74HC165.C: 'P3': undefined identifier
+   3          sbit Pl=P3^2;
+*** ERROR C202 IN LINE 3 OF 74HC165.C: 'P3': undefined identifier
+   4          
+   5          unsigned char read_74hc165(void)
+   6          {
+   7   1       char i;
+   8   1      unsigned char t=0;
+   9   1      pl=0;//asunchro. load of parallel to internal reg.
+*** ERROR C202 IN LINE 9 OF 74HC165.C: 'pl': undefined identifier
+  10   1      pl=1;
+*** ERROR C202 IN LINE 10 OF 74HC165.C: 'pl': undefined identifier
+  11   1      for(i=7;i>=0;i--)
+  12   1      {
+  13   2       clk=0;
+*** ERROR C202 IN LINE 13 OF 74HC165.C: 'clk': undefined identifier
+  14   2      if(q7)//read data msb first
+*** ERROR C202 IN LINE 14 OF 74HC165.C: 'q7': undefined identifier
+  15   2      t!=1<<i;//update status to appropriate bit position in var
+  16   2      clk=1;
+*** ERROR C202 IN LINE 16 OF 74HC165.C: 'clk': undefined identifier
+  17   2      
+  18   2      }
+  19   1      return t;
+  20   1      
+  21   1      
+  22   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  8 ERROR(S)

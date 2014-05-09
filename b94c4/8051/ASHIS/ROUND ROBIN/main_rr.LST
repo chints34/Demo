@@ -1,0 +1,311 @@
+A51 MACRO ASSEMBLER  MAIN_RR                                                              12/09/2013 15:19:07 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN main_rr.OBJ
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE main_rr.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+  00B0                 3                     C0 BIT P3.0
+  00B1                 4                     C1 BIT P3.1
+  00B2                 5                     C2 BIT P3.2
+                       6             
+  00B4                 7                     RW0 BIT P3.4
+  00B5                 8                     RW1 BIT P3.5
+  00B6                 9                     RW2 BIT P3.6
+                      10     
+                      11     key segment code
+----                  12     rseg key
+                      13     
+0000 407924           14     KROW1:DB 40h,79h,24h
+0003 301912           15     KROW2:DB 30h,19h,12h
+0006 027800           16     KROW3:DB 02h,78h,00h
+                      17     
+                      18     
+                      19       
+                      20     
+  000B                21     T0_INT_VECT EQU 000BH
+                      22     
+  0000                23     T1RA_LB EQU 00H 
+  0001                24     T1RA_HB EQU 01H
+                      25     
+  0002                26     T2RA_LB EQU 02H 
+  0003                27     T2RA_HB EQU 03H
+                      28     
+  0004                29     T3RA_LB EQU 04H 
+  0005                30     T3RA_HB EQU 05H
+                      31     
+----                  32     CSEG AT 0
+0000 8044             33     SJMP SCHEDULAR
+                      34     
+                      35     
+----                  36     CSEG AT T0_INT_VECT
+000B C28C             37     CLR TR0
+                      38     
+000D 20F013           39     JB B.0,_TASK2
+0010 20F11D           40     JB B.1,_TASK3
+0013 20F200           41     JB B.2,_TASK1
+                      42     
+0016                  43     _TASK1:
+0016 D005             44     POP T3RA_HB
+0018 D004             45     POP T3RA_LB
+                      46     
+001A C000             47     PUSH T1RA_LB
+001C C001             48     PUSH T1RA_HB
+                      49     
+001E 75F001           50     MOV B,#1
+0021 801A             51     SJMP RST_SCHEDULAR
+                      52     
+                      53     
+0023                  54     _TASK2:
+0023 D001             55     POP T1RA_HB
+0025 D000             56     POP T1RA_LB
+                      57     
+0027 C002             58     PUSH T2RA_LB
+A51 MACRO ASSEMBLER  MAIN_RR                                                              12/09/2013 15:19:07 PAGE     2
+
+0029 C003             59     PUSH T2RA_HB
+                      60     
+002B 75F002           61     MOV B,#2
+002E 800D             62     SJMP RST_SCHEDULAR
+                      63     
+                      64     
+                      65     
+0030                  66     _TASK3:
+0030 D003             67     POP T2RA_HB
+0032 D002             68     POP T2RA_LB
+                      69     
+0034 C004             70     PUSH T3RA_LB
+0036 C005             71     PUSH T3RA_HB
+                      72     
+0038 75F004           73     MOV B,#4
+003B 8000             74     SJMP RST_SCHEDULAR
+                      75     
+                      76     
+003D                  77     RST_SCHEDULAR:
+                      78     
+003D 758CD8           79             MOV TH0,#0D8H
+0040 758AF0           80             MOV TL0,#0F0H
+0043 D28C             81             SETB TR0
+0045 32               82             RETI
+                      83     
+                      84     
+0046                  85     MAIN:
+                      86     
+0046                  87     SCHEDULAR:
+                      88     
+0046 900073           89             MOV DPTR,#TASK1
+0049 858200           90             MOV T1RA_LB,DPL
+004C 858301           91             MOV T1RA_HB,DPH
+                      92     
+004F 90007D           93             MOV DPTR,#TASK2
+                      94     
+0052 858202           95             MOV T2RA_LB,DPL
+0055 858303           96             MOV T2RA_HB,DPH
+                      97     
+0058 9000D3           98             MOV DPTR,#TASK3
+005B 858204           99             MOV T3RA_LB,DPL
+005E 858305          100             MOV T3RA_HB,DPH
+                     101     
+                     102             
+0061 D2AF            103             SETB EA
+0063 D2A9            104             SETB ET0
+0065 758901          105             MOV TMOD,#01H
+                     106     
+0068 758CD8          107             MOV TH0,#0D8H
+006B 758AF0          108             MOV TL0,#0F0H
+006E D28C            109             SETB TR0
+0070 75F001          110             MOV B,#1
+                     111     
+0073                 112     TASK1:
+0073                 113     TASK1_LOOP:
+0073 0530            114             inc 30h
+0075 75A000          115             MOV P2,#00H
+                     116     ;       ACALL delay1ms
+0078 75A0FF          117             MOV P2,#0FFH
+007B 80F6            118             Sjmp TASK1_LOOP
+                     119     
+007D                 120     TASK2:
+007D                 121             TASK2_LOOP:
+007D 0531            122                     INC 31H
+                     123     
+007F C2B4            124                     CLR RW0
+A51 MACRO ASSEMBLER  MAIN_RR                                                              12/09/2013 15:19:07 PAGE     3
+
+0081 C2B5            125                     CLR RW1
+0083 C2B6            126                     CLR RW2                                                                    
+                                          
+0085 D2B0            127                     SETB C0
+0087 D2B1            128                     SETB C1
+0089 D2B2            129                     SETB C2
+                     130                     
+008B                 131                     A1:
+008B 11DA            132                     ACALL COLCHECK
+008D 40FC            133                     JC A1
+                     134     
+008F                 135             SCAN1:
+                     136             ;FOR ROW1
+008F C2B4            137                     CLR RW0
+0091 D2B5            138                     SETB RW1
+0093 D2B6            139                     SETB RW2
+0095 11DA            140                     ACALL COLCHECK
+0097 4002            141                     JC ROW1
+0099 8016            142                     SJMP DISP1
+                     143     
+009B                 144                     ROW1:
+                     145             ;FOR ROW2
+009B D2B4            146                     SETB RW0
+009D C2B5            147                     CLR RW1
+009F D2B6            148                     SETB RW2
+00A1 11DA            149                     ACALL COLCHECK
+00A3 4002            150                     JC ROW2
+00A5 800F            151                     SJMP DISP2
+                     152     
+                     153     
+00A7                 154                     ROW2:
+                     155             ;FOR ROW3
+00A7 D2B4            156                     SETB RW0
+00A9 D2B5            157                     SETB RW1
+00AB C2B6            158                     CLR RW2
+00AD 11DA            159                     ACALL COLCHECK
+00AF 800A            160                     SJMP DISP3
+00B1                 161     DISP1:
+00B1 900000   F      162             MOV DPTR,#KROW1
+00B4 800A            163             SJMP COLSCAN
+                     164             
+                     165     
+00B6                 166     DISP2:
+00B6 900000   F      167             MOV DPTR,#KROW2
+00B9 8005            168             SJMP COLSCAN
+                     169     
+00BB                 170     DISP3:
+00BB 900000   F      171             MOV DPTR,#KROW3
+00BE 8000            172             SJMP COLSCAN
+                     173     
+00C0                 174     COLSCAN:
+00C0 7B00            175                     MOV R3,#0
+00C2 30B008          176                     JNB C0,DIS
+00C5 0B              177                     INC R3
+00C6 30B104          178                     JNB C1,DIS
+00C9 0B              179                     INC R3
+00CA 30B200          180                     JNB C2,DIS
+00CD                 181     DIS:
+00CD EB              182             MOV A,R3
+00CE 93              183             MOVC A,@A+DPTR
+00CF F520            184             MOV 20H,A
+                     185     
+00D1 80AA            186     SJMP TASK2_LOOP
+                     187     
+00D3                 188     TASK3:
+00D3                 189             TASK3_LOOP:
+A51 MACRO ASSEMBLER  MAIN_RR                                                              12/09/2013 15:19:07 PAGE     4
+
+00D3 0532            190                     INC 32H
+00D5 852080          191                     MOV 80H,20H
+00D8 80F9            192     SJMP TASK3_LOOP
+                     193     
+                     194     
+                     195     ;FUNCTION FOR COLUMN CHECK
+00DA                 196     COLCHECK:
+00DA D3              197             SETB C
+00DB 82B0            198             ANL C,C0
+                     199             ;JC CHECK1
+00DD 82B1            200             ANL C,C1
+                     201             ;JC CHECK2
+00DF 82B2            202             ANL C,C2
+00E1 22              203             RET
+                     204     
+                     205              
+                     206             
+                     207     
+                     208     ;FOR DELAY SUBROUTINE
+                     209     
+00E2                 210             delay1ms:
+00E2 7FFF            211             mov r7,#255
+00E4 DFFE            212             djnz r7,$
+00E6 7FF2            213             mov r7,#242
+00E8 DFFE            214             djnz r7,$
+00EA 22              215             ret
+                     216     
+00EB                 217     delay100ms:
+00EB 7E63            218             mov r6,#99
+00ED                 219     l1:
+00ED 11E2            220             acall delay1ms
+00EF DEFC            221             djnz r6,l1
+00F1 7EFF            222             mov r6,#255
+00F3 DEFE            223             djnz r6,$
+00F5 7E8E            224             mov r6,#142
+00F7 DEFE            225             djnz r6,$
+00F9 00              226             nop
+00FA 22              227             ret
+                     228     END
+A51 MACRO ASSEMBLER  MAIN_RR                                                              12/09/2013 15:19:07 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+A1 . . . . . . . .  C ADDR   008BH   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+C0 . . . . . . . .  B ADDR   00B0H.0 A   
+C1 . . . . . . . .  B ADDR   00B0H.1 A   
+C2 . . . . . . . .  B ADDR   00B0H.2 A   
+COLCHECK . . . . .  C ADDR   00DAH   A   
+COLSCAN. . . . . .  C ADDR   00C0H   A   
+DELAY100MS . . . .  C ADDR   00EBH   A   
+DELAY1MS . . . . .  C ADDR   00E2H   A   
+DIS. . . . . . . .  C ADDR   00CDH   A   
+DISP1. . . . . . .  C ADDR   00B1H   A   
+DISP2. . . . . . .  C ADDR   00B6H   A   
+DISP3. . . . . . .  C ADDR   00BBH   A   
+DPH. . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+KEY. . . . . . . .  C SEG    0009H       REL=UNIT
+KROW1. . . . . . .  C ADDR   0000H   R   SEG=KEY
+KROW2. . . . . . .  C ADDR   0003H   R   SEG=KEY
+KROW3. . . . . . .  C ADDR   0006H   R   SEG=KEY
+L1 . . . . . . . .  C ADDR   00EDH   A   
+MAIN . . . . . . .  C ADDR   0046H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+ROW1 . . . . . . .  C ADDR   009BH   A   
+ROW2 . . . . . . .  C ADDR   00A7H   A   
+RST_SCHEDULAR. . .  C ADDR   003DH   A   
+RW0. . . . . . . .  B ADDR   00B0H.4 A   
+RW1. . . . . . . .  B ADDR   00B0H.5 A   
+RW2. . . . . . . .  B ADDR   00B0H.6 A   
+SCAN1. . . . . . .  C ADDR   008FH   A   
+SCHEDULAR. . . . .  C ADDR   0046H   A   
+T0_INT_VECT. . . .  N NUMB   000BH   A   
+T1RA_HB. . . . . .  N NUMB   0001H   A   
+T1RA_LB. . . . . .  N NUMB   0000H   A   
+T2RA_HB. . . . . .  N NUMB   0003H   A   
+T2RA_LB. . . . . .  N NUMB   0002H   A   
+T3RA_HB. . . . . .  N NUMB   0005H   A   
+T3RA_LB. . . . . .  N NUMB   0004H   A   
+TASK1. . . . . . .  C ADDR   0073H   A   
+TASK1_LOOP . . . .  C ADDR   0073H   A   
+TASK2. . . . . . .  C ADDR   007DH   A   
+TASK2_LOOP . . . .  C ADDR   007DH   A   
+TASK3. . . . . . .  C ADDR   00D3H   A   
+TASK3_LOOP . . . .  C ADDR   00D3H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+_TASK1 . . . . . .  C ADDR   0016H   A   
+_TASK2 . . . . . .  C ADDR   0023H   A   
+_TASK3 . . . . . .  C ADDR   0030H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

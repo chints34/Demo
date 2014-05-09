@@ -1,0 +1,97 @@
+C51 COMPILER V7.08   SEVENSEGTEST                                                          10/12/2010 02:35:24 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE SEVENSEGTEST
+OBJECT MODULE PLACED IN C:\ISP's\sevensegtest.obj
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE sevensegtest.c BROWSE DEBUG OBJECTEXTEND OBJECT(C:\ISP's\sevensegtest.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include"uart.h"
+   3          
+   4          code unsigned char seg_lut[]={0x40,0x79,0x24,0x30,0x19,0x12,0x02,0x78,0x00,0x10};
+   5          #define segs_4_mux P0
+   6          
+   7          sbit sel1=P2^0;        sbit sel3=P2^2;
+   8          sbit sel2=P2^1;        sbit sel4=P2^3;
+   9          
+  10          
+  11          unsigned char dp1=0x80,dp2=0x80,dp3=0x80,dp4=0x80;
+  12          //unsigned char dp1=0x80,dp2=0x80,dp3=0x80,dp4=0x80;
+  13          
+  14          
+  15          void sevseg_test()
+  16            {
+  17   1          unsigned char d,s,z;
+  18   1          print("you are in SEVENSEG TEST\n\r");
+  19   1          print("Connect a-dp pin of seven segment display to P0 and sel1-sel4 P2.0-P2.3\n\r");
+  20   1      TES: print("Enter any key(0 t0 9) to test SEVEN SEGMENT...\n\r");
+  21   1          uart_rx();
+  22   1              P2=0xF0;
+  23   1          P0=0x00;
+  24   1          
+  25   1              
+  26   1          print("Check all the segment is working or not\n\r");
+  27   1          print("enter 'y' for yes and 'n' for no\n\r");
+  28   1          d=uart_rx();
+  29   1          if(d=='y')
+  30   1           {
+  31   2           P2=0x0F;
+  32   2           RES: print("all the segment are working. do u want to continue?\n\r");
+  33   2                s=uart_rx();
+  34   2                if(s=='y'||s=='Y')
+  35   2                  {
+  36   3                       goto TES;
+  37   3                       }
+  38   2                 else if(s=='n'||s=='N')
+  39   2                   return;
+  40   2                      else
+  41   2                       {
+  42   3                        print("invalid choice.try again!\n\r");
+  43   3                        goto RES; 
+  44   3                       }
+  45   2                 }
+  46   1                 else if(d=='n'||d=='N')
+  47   1                    {
+  48   2                         print("problem in displaying seven segment.Error posibility...\n\r");
+  49   2              ERR:print("(1)SEVEN SEGMENT Damaged\n\r");
+  50   2                 print("(2)connection Problem\n\r");
+  51   2                 z=uart_rx();
+  52   2                 if(z=='1')
+  53   2                 {
+  54   3                  print("Sorry!SEVEN SEGMENT Damaged\n\r");
+  55   3                  return;
+C51 COMPILER V7.08   SEVENSEGTEST                                                          10/12/2010 02:35:24 PAGE 2   
+
+  56   3                 }
+  57   2                else if(z=='2')
+  58   2                {
+  59   3                print("Connection problem. Connect acccording to above instruction\n\r");
+  60   3                print("Connect a-dp pin of seven segment display to P0 and sel1-sel4 P2.0-P2.3\n\r");
+  61   3                goto TES;
+  62   3                }
+  63   2             else
+  64   2               {
+  65   3                print("Invalid choice.Enter (1)or(2)for error check\n\r");
+  66   3                 goto ERR;
+  67   3               }
+  68   2                        
+  69   2      }
+  70   1      }
+  71                           
+  72                    
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    203    ----
+   CONSTANT SIZE    =    567    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

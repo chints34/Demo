@@ -1,0 +1,130 @@
+A51 MACRO ASSEMBLER  SEG_MUX                                                              11/13/2013 08:41:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN C:\ISP'S\SP_ISP\bin\Debug\SEG_MUX.obj
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE SEG_MUX.ASM SET(SMALL) DEBUG OBJECT(C:\ISP'S\SP_ISP\bin\Debug\SEG_MUX.obj
+                      ) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     SEVSEG SEGMENT CODE
+----                   3     RSEG SEVSEG
+0000 40                4     SEG_LUT:DB 40H;0
+0001 79                5             DB 79H;1
+0002 24                6             DB 24H;2
+0003 30                7             DB 30H;3
+0004 19                8             DB 19H;4
+0005 12                9             DB 12H;5
+0006 02               10             DB 02H;6
+0007 78               11             DB 78H;7
+0008 00               12             DB 00H;8
+0009 10               13             DB 10H;9
+  0080                14     SEG_2_MUX EQU P0
+  00A0                15     SEL1 BIT P2.0
+  00A1                16     SEL2 BIT P2.1
+000A                  17     DISP_2_MUX_SEGS:
+000A EC               18     MOV A,R4
+000B 75F010           19     MOV B,#10H
+000E 84               20     DIV AB
+000F 93               21     MOVC A,@A+DPTR
+0010 4480             22     ORL A,#80H
+0012 F580             23     MOV SEG_2_MUX,A
+0014 C2A0             24     CLR SEL1
+0016                  25     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 25 (SEG_MUX.ASM, LINE 25): UNDEFINED SYMBOL (PASS-2)
+0018                  26     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 26 (SEG_MUX.ASM, LINE 26): UNDEFINED SYMBOL (PASS-2)
+001A                  27     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 27 (SEG_MUX.ASM, LINE 27): UNDEFINED SYMBOL (PASS-2)
+001C                  28     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 28 (SEG_MUX.ASM, LINE 28): UNDEFINED SYMBOL (PASS-2)
+001E                  29     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 29 (SEG_MUX.ASM, LINE 29): UNDEFINED SYMBOL (PASS-2)
+0020                  30     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 30 (SEG_MUX.ASM, LINE 30): UNDEFINED SYMBOL (PASS-2)
+0022                  31     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 31 (SEG_MUX.ASM, LINE 31): UNDEFINED SYMBOL (PASS-2)
+0024                  32     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 32 (SEG_MUX.ASM, LINE 32): UNDEFINED SYMBOL (PASS-2)
+0026                  33     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 33 (SEG_MUX.ASM, LINE 33): UNDEFINED SYMBOL (PASS-2)
+0028                  34     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 34 (SEG_MUX.ASM, LINE 34): UNDEFINED SYMBOL (PASS-2)
+002A D2A0             35     SETB SEL1
+002C E5F0             36     MOV A,B
+002E 93               37     MOVC A,@A+DPTR
+A51 MACRO ASSEMBLER  SEG_MUX                                                              11/13/2013 08:41:23 PAGE     2
+
+002F 4480             38     ORL A,#80H
+0031 F580             39     MOV SEG_2_MUX,A
+0033 C2A1             40     CLR SEL2
+0035                  41     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 41 (SEG_MUX.ASM, LINE 41): UNDEFINED SYMBOL (PASS-2)
+0037                  42     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 42 (SEG_MUX.ASM, LINE 42): UNDEFINED SYMBOL (PASS-2)
+0039                  43     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 43 (SEG_MUX.ASM, LINE 43): UNDEFINED SYMBOL (PASS-2)
+003B                  44     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 44 (SEG_MUX.ASM, LINE 44): UNDEFINED SYMBOL (PASS-2)
+003D                  45     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 45 (SEG_MUX.ASM, LINE 45): UNDEFINED SYMBOL (PASS-2)
+003F                  46     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 46 (SEG_MUX.ASM, LINE 46): UNDEFINED SYMBOL (PASS-2)
+0041                  47     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 47 (SEG_MUX.ASM, LINE 47): UNDEFINED SYMBOL (PASS-2)
+0043                  48     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 48 (SEG_MUX.ASM, LINE 48): UNDEFINED SYMBOL (PASS-2)
+0045                  49     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 49 (SEG_MUX.ASM, LINE 49): UNDEFINED SYMBOL (PASS-2)
+0047                  50     ACALL DELAY100MS
+*** _______________________________^
+*** ERROR #A45 IN 50 (SEG_MUX.ASM, LINE 50): UNDEFINED SYMBOL (PASS-2)
+0049 D2A1             51     SETB SEL2
+004B 22               52     RET
+                      53     
+*** WARNING #A41 IN 53 (SEG_MUX.ASM, LINE 53): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  SEG_MUX                                                              11/13/2013 08:41:23 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+DELAY100MS . . . .    ----   -----       
+DISP_2_MUX_SEGS. .  C ADDR   000AH   R   SEG=SEVSEG
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SEG_2_MUX. . . . .  D ADDR   0080H   A   
+SEG_LUT. . . . . .  C ADDR   0000H   R   SEG=SEVSEG
+SEL1 . . . . . . .  B ADDR   00A0H.0 A   
+SEL2 . . . . . . .  B ADDR   00A0H.1 A   
+SEVSEG . . . . . .  C SEG    004CH       REL=UNIT
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 20 ERROR(S)

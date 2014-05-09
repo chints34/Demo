@@ -1,0 +1,81 @@
+C51 COMPILER V7.08   LED                                                                   12/18/2013 15:30:45 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN led.OBJ
+COMPILER INVOKED BY: C:\Keil2\C51\BIN\C51.EXE led.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          //#include"uart.h"
+   3          
+   4          sbit led1=P0^0;        sbit led5=P0^4;
+   5          sbit led2=P0^1;        sbit led6=P0^5;
+   6          sbit led3=P0^2;        sbit led7=P0^6;
+   7          sbit led4=P0^3;        sbit led8=P0^7;
+   8          
+   9          //LED TEST    
+  10          void led_test()
+  11              {
+  12   1          unsigned char x,z;
+  13   1          print("YOU ARE IN LED TESTING MODULE\n\r");
+*** WARNING C206 IN LINE 13 OF LED.C: 'print': missing function-prototype
+*** ERROR C267 IN LINE 13 OF LED.C: 'print': requires ANSI-style prototype
+  14   1          
+  15   1              //[ACTIVE HIGH LEDs AT P0.0 TO P0.3 | ACTIVE LOW LEDs AT P0.4 TO P0.7]
+  16   1              print("connect port P0.0-P0.3 to active Low LEDs\tconnect port P0.4-P0.7 to active High LEDs\n\r");
+  17   1          P0=0x0F; //OFF ALL LEDs
+  18   1          
+  19   1              //TESTING
+  20   1              print("TESTING..\n");
+  21   1              CHK:print("Enter any key to test...\n");
+  22   1          uart_rx();
+  23   1          P0=0xF0; //ON ALL LEDS  OR 0x0F0
+  24   1          print("check all the Leds glowing or not?\nenter(Y)for Yes(N)for No\n\r");
+  25   1          x=uart_rx();
+  26   1          if(x=='Y'||x=='y')
+  27   1          {
+  28   2           print("Yes,All the LEDs are glowing\n");
+  29   2               P0=0x0F; //OFF ALL LEDs
+  30   2           return;
+  31   2          }
+  32   1          else if(x=='N'||x=='n')
+  33   1           {
+  34   2            print("connect port P0.0-P0.3 to active Low LEDs\nconnect port P0.4-P0.7 to active High LEDs\n\r");
+  35   2       ERROR:     print("Error posibilities...\n");
+  36   2      
+  37   2                print("check whether ANY LED IS DAMAGED...\n");
+  38   2            print("TYPE (1) IF LED Damaged\n");
+  39   2      
+  40   2                print("check IF any CONNECTION IS WRONG...\n"); 
+  41   2            print("TYPE (2) IF connection Problem\n");
+  42   2            z=uart_rx();
+  43   2            if(z=='1')
+  44   2             {
+  45   3              print("Sorry!LED Damaged\n\r");
+  46   3              return;
+  47   3              }
+  48   2             else if(z=='2')
+  49   2              {
+  50   3                print("Connection pRoblem. Connect acccording to above instruction\n\r");
+  51   3                return;
+  52   3              }
+  53   2             else
+C51 COMPILER V7.08   LED                                                                   12/18/2013 15:30:45 PAGE 2   
+
+  54   2               {
+  55   3                print("Invalid choice.Enter (1)or(2)for error check\n\r");
+  56   3                 goto ERROR;
+  57   3               }
+  58   2                  
+  59   2           }
+  60   1           else
+  61   1              {
+  62   2               print("invalid choice.Enter (Y)for Yes or(N)for No\n\r");
+  63   2               goto CHK;    
+  64   2              }    
+  65   1      
+  66   1      }//end of led_test fn
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

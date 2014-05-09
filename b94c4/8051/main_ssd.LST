@@ -1,0 +1,91 @@
+A51 MACRO ASSEMBLER  MAIN_SSD                                                             03/10/2002 08:12:11 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN C:\ISP'S\SP_ISP\bin\Debug\main_ssd.obj
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE main_ssd.asm SET(SMALL) DEBUG OBJECT(C:\ISP'S\SP_ISP\bin\Debug\main_ssd.o
+                      bj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;$include (DELAY.ASM)
+                +1     2     DELAY_ROUTINES SEGMENT CODE
+----            +1     3     RSEG DELAY_ROUTINES
+0000            +1     4     DELAY1MS:
+0000 7EFF       +1     5     MOV R6,#255
+0002 DEFE       +1     6     DJNZ R6,$
+0004 7EF2       +1     7     MOV R6,#242
+0006 DEFE       +1     8     DJNZ R6,$
+0008 22         +1     9     RET
+0009            +1    10     DELAY100MS:
+0009 7F63       +1    11     MOV R7,#99
+000B            +1    12     L1:
+000B 1100     F +1    13     ACALL DELAY1MS
+000D DFFC       +1    14     DJNZ R7,L1
+000F 7FFF       +1    15     MOV R7,#255
+0011 DFFE       +1    16     DJNZ R7,$
+0013 7F8E       +1    17     MOV R7,#142
+0015 DFFE       +1    18     DJNZ R7,$
+0017 00         +1    19     NOP
+0018 22         +1    20     RET
+                +1    21     
+                      22     
+                      23     SEVSEG SEGMENT CODE
+----                  24     RSEG SEVSEG
+0000 40               25     SEG_LUT:DB 40H;0
+0001 79               26             DB 79H;1
+0002 24               27             DB 24H;2
+0003 30               28             DB 30H;3
+0004 19               29             DB 19H;4
+0005 12               30             DB 12H;5
+0006 02               31             DB 02H;6
+0007 78               32             DB 78H;7
+0008 00               33             DB 00H;8
+  0080                34     SEG EQU P0
+----                  35     CSEG AT 0
+0000                  36     MAIN:
+0000 900000   F       37     MOV DPTR,#SEG_LUT
+0003                  38     AGAIN:
+0003 E4               39     CLR A
+0004 93               40     MOVC A,@A+DPTR
+0005 F580             41     MOV SEG,A
+0007 1100     F       42     ACALL DELAY100MS
+0009 1100     F       43     ACALL DELAY100MS
+000B 1100     F       44     ACALL DELAY100MS
+000D 1100     F       45     ACALL DELAY100MS
+000F 1100     F       46     ACALL DELAY100MS
+0011 1100     F       47     ACALL DELAY100MS
+0013 1100     F       48     ACALL DELAY100MS
+0015 1100     F       49     ACALL DELAY100MS
+0017 1100     F       50     ACALL DELAY100MS
+0019 1100     F       51     ACALL DELAY100MS
+001B A3               52     INC DPTR
+001C E582             53     MOV A,DPL
+001E B400E2   F       54     CJNE A,#SEG_LUT+10,AGAIN
+0021 80DD             55     SJMP MAIN
+                      56     END
+A51 MACRO ASSEMBLER  MAIN_SSD                                                             03/10/2002 08:12:11 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   0003H   A   
+DELAY100MS . . . .  C ADDR   0009H   R   SEG=DELAY_ROUTINES
+DELAY1MS . . . . .  C ADDR   0000H   R   SEG=DELAY_ROUTINES
+DELAY_ROUTINES . .  C SEG    0019H       REL=UNIT
+DPL. . . . . . . .  D ADDR   0082H   A   
+L1 . . . . . . . .  C ADDR   000BH   R   SEG=DELAY_ROUTINES
+MAIN . . . . . . .  C ADDR   0000H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+SEG. . . . . . . .  D ADDR   0080H   A   
+SEG_LUT. . . . . .  C ADDR   0000H   R   SEG=SEVSEG
+SEVSEG . . . . . .  C SEG    0009H       REL=UNIT
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

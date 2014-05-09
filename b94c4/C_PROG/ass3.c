@@ -1,0 +1,22 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+main()
+{
+  if(fork())
+    {
+        if(fork())
+          {
+           execlp("pwd","pwd",NULL);
+          }
+        else
+	     {
+	      execlp("ls","ls",NULL);
+             }
+    }
+else
+   {
+     execlp("date","date",NULL);
+   }
+
+}

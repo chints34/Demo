@@ -1,0 +1,32 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+V:\8051\embedded c.uv2
+Project File Date:  10/31/2013
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1msmain.c...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _DELAY_1MS
+    MODULE:  1msmain.obj (1MSMAIN)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _DELAY_1MS
+    MODULE:  1msmain.obj (1MSMAIN)
+    ADDRESS: 0016H
+Program Size: data=9.0 xdata=0 code=26
+"embedded c" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling 1msmain.c...
+linking...
+Program Size: data=9.0 xdata=0 code=51
+"embedded c" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling delay1.c...
+compiling 1msmain.c...
+linking...
+Program Size: data=9.0 xdata=0 code=51
+"embedded c" - 0 Error(s), 0 Warning(s).

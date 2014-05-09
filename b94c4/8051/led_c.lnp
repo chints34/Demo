@@ -1,0 +1,3 @@
+"led_switch.obj" 
+TO "led_c" 
+RAMSIZE(256) 

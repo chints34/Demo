@@ -1,0 +1,6 @@
+"4mux.obj",
+"delay.obj",
+"seg.obj" 
+TO "float" 
+RAMSIZE(256) 
+CODE( 0X0000-0X1FFF )

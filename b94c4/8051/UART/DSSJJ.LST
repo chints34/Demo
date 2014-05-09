@@ -1,0 +1,24 @@
+A51 MACRO ASSEMBLER  DSSJJ                                                                11/15/2013 15:04:45 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN DSSJJ.OBJ
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE DSSJJ.ASM SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+*** WARNING #A41 IN 0 (DSSJJ.ASM, LINE 0): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  DSSJJ                                                                11/15/2013 15:04:45 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

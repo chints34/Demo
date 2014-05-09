@@ -1,0 +1,433 @@
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE GSM
+OBJECT MODULE PLACED IN gsm.OBJ
+COMPILER INVOKED BY: C:\KEIL708\C51\BIN\C51.EXE gsm.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /** DESIGN OF GSM BASED DEVICE CONTROL (ON OFF) SYSTEM **/
+   2          /**COMPILER DIRECTIVES**/
+   3          #include<reg51.h>
+   4          #include<string.h>
+   5          
+   6          /**LCD CONNECTIONS**/
+   7          #define LCD P0
+   8          
+   9          /**DEVICES CONNECTION**/
+  10          sbit bulb = P2^1;
+  11          sbit fan = P1^1;
+  12          
+  13          /**VARIABLES DECLARATION**/
+  14          bit flag=0;
+  15          bit r_flag = 0;
+  16          bit sucess = 0;
+  17          int i=0;
+  18          int l,k;
+  19          char idata buff[150];
+  20          char phone1[12];
+  21          
+  22          /**FUNCTIONS DECLARATION**/
+  23          void init_lcd(void);
+  24          void cmd_lcd(unsigned char var);
+  25          void data_lcd(unsigned char var);
+  26          void display_lcd(char *str);
+  27          void delay_ms(int cnt);
+  28          
+  29          /**GSM FUNCTIONS DECLARATION**/
+  30          void gsm_init(void);
+  31          void print(char *); //to send string to the serialcom window
+  32          int recv_sms(void);
+  33          void SEND_CHR(unsigned char);  //to send character to the serialcom window
+  34          void send_sms(unsigned char *p,unsigned char *d);
+  35          
+  36          
+  37          /**SERIAL INTERRUPT SERVICE ROUTINE**/
+  38          void serial_intr(void) interrupt 4
+  39          {
+  40   1              if(TI == 1)
+  41   1              {
+  42   2                      TI = 0;
+  43   2                      flag = 1;
+  44   2              }
+  45   1              else if(RI==1)
+  46   1              {
+  47   2                      RI = 0;
+  48   2                      r_flag = 1;
+  49   2                      if(i < 150)
+  50   2                      buff[i++] = SBUF;
+  51   2              }       
+  52   1              else
+  53   1              {
+  54   2                      ;
+  55   2              }
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 2   
+
+  56   1      }
+  57          
+  58          /**MAIN FUNCTION**/
+  59          main()
+  60          {
+  61   1              unsigned int x;
+  62   1      
+  63   1              TMOD = 0x21; //USART INITIALIZATION REGISTERS
+  64   1              SCON = 0x50;
+  65   1              TH1 = -3; //9600 BUADRATE
+  66   1              TR1 = 1;
+  67   1      
+  68   1              IE = 0x90; //INTERRUPT REGISTER
+  69   1      
+  70   1              bulb=fan=0; //DEVICES OFF
+  71   1      
+  72   1              init_lcd(); //LCD INITIALIZATION FUNCTION CALLING
+  73   1      
+  74   1              display_lcd("** GSM BASED ***"); //DISPLAY STRING ON LCD
+  75   1              cmd_lcd(0xc0); //2ND LINE DISPLAY
+  76   1              display_lcd("*DEVICE CONTROL*");//DISPLAY STRING ON LCD
+  77   1              delay_ms(500);
+  78   1      
+  79   1              gsm_init(); //GSM INITIALIZATION FUNCTION CALLING
+  80   1      
+  81   1              IE=0x91; //INTERRUPT REGISTER
+  82   1      
+  83   1              while(1)
+  84   1              {
+  85   2                      cmd_lcd(0x01);//CLEAR SCREEN
+  86   2                      display_lcd("WAITING FOR     ");
+  87   2                      cmd_lcd(0xc0);
+  88   2                      display_lcd("MESSAGE.........");
+  89   2      
+  90   2                      x = recv_sms(); //WAITING FOR MESSAGE
+  91   2      
+  92   2                      if(x==0)
+  93   2                      {
+  94   3                              cmd_lcd(0x01);
+  95   3                              display_lcd("WRONG FORMAT"); //INVALID MESSAGE
+  96   3                              delay_ms(100);
+  97   3                              send_sms("9949753456","--->MESSAGE IS IN WRONG FORMAT");
+  98   3                              delay_ms(1500);
+  99   3                              //send_sms("9030040239","--->MESSAGE IS IN WRONG FORMAT");
+ 100   3                              //delay_ms(1500);
+ 101   3      
+ 102   3                      }
+ 103   2                      else if(x==1)
+ 104   2                      {
+ 105   3                              cmd_lcd(0x01);
+ 106   3                              display_lcd("FAN ON");
+ 107   3                              fan=1; //FAN ON
+ 108   3                              delay_ms(100);
+ 109   3                              send_sms("9949753456","***FAN ON***");
+ 110   3                              delay_ms(1500);
+ 111   3                              //send_sms("9030040239","***FAN ON***");
+ 112   3                              //delay_ms(1500);
+ 113   3                      }
+ 114   2                      else if(x==2)
+ 115   2                      {
+ 116   3                              cmd_lcd(0x01);
+ 117   3                              display_lcd("FAN OFF");
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 3   
+
+ 118   3                              fan=0; //FAN OFF
+ 119   3                              delay_ms(100);
+ 120   3                              send_sms("9949753456","***FAN OFF***");
+ 121   3                              delay_ms(1500);
+ 122   3                      //      send_sms("9030040239","***FAN OFF***");
+ 123   3                      //      delay_ms(1500);
+ 124   3                      }
+ 125   2                      else if(x==3)
+ 126   2                      {
+ 127   3                              cmd_lcd(0x01);
+ 128   3                              display_lcd("BULB ON");
+ 129   3                              bulb=1; //BULB ON
+ 130   3                              delay_ms(100);
+ 131   3                              send_sms("9949753456","***BULB ON***");
+ 132   3                              delay_ms(1500);
+ 133   3                      //      send_sms("9030040239","***BULB ON***");
+ 134   3                      //      delay_ms(1500);
+ 135   3                              
+ 136   3                      }
+ 137   2                      else if(x==4)
+ 138   2                      {
+ 139   3                              cmd_lcd(0x01);
+ 140   3                              display_lcd("BULB OFF");
+ 141   3                              bulb=0; //BULB OFF
+ 142   3                              delay_ms(100);
+ 143   3                              send_sms("9949753456","***BULB OFF***");
+ 144   3                              delay_ms(1500);
+ 145   3                      //      send_sms("9030040239","***BULB OFF***");
+ 146   3                      //      delay_ms(1500);
+ 147   3                      }
+ 148   2                      else
+ 149   2                      {
+ 150   3                              ;
+ 151   3                      }
+ 152   2                      delay_ms(1000);
+ 153   2              }
+ 154   1      }
+ 155          
+ 156          
+ 157          /**RECEIVE SMS FUNCTION**/
+ 158          int recv_sms()
+ 159          {
+ 160   1              sucess = 0;
+ 161   1              do{
+ 162   2              strcpy(buff," ");
+ 163   2              r_flag = 0;
+ 164   2              i = 0;
+ 165   2              print("AT+CMGD=1\r\n"); // DELETE FIRST MESSAGE IN SIM MEMORY
+ 166   2              while(i <= 2);  //WAITING FOR RESPONCE AS 'O','K',' '
+ 167   2              delay_ms(100);
+ 168   2              delay_ms(100);
+ 169   2              l = 0;
+ 170   2              while(buff[l] != '\0')
+ 171   2              {
+ 172   3              if(buff[l++] == 'O')
+ 173   3                      sucess = 1;
+ 174   3              }
+ 175   2              delay_ms(100);
+ 176   2              }
+ 177   1              while(sucess != 1);//UPTO RECEIVING OK IT IS CHECKING
+ 178   1      
+ 179   1              do{
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 4   
+
+ 180   2              i = 0;
+ 181   2              strcpy(buff,"");
+ 182   2              r_flag = 0;
+ 183   2              while(r_flag == 0)
+ 184   2              if(buff[2] == '+')//WAITING FOR MESSAGE +CMTI: "SM",1
+ 185   2              sucess = 1;
+ 186   2              }while(sucess != 1);
+ 187   1      
+ 188   1              cmd_lcd(0x01);
+ 189   1              display_lcd("MESSAGE RECEIVED");
+ 190   1              delay_ms(500);
+ 191   1              i = 0;
+ 192   1              strcpy(buff,"");
+ 193   1              print("AT+CMGR=1\r\n"); //READ FIRST MESSAGE IN SIM MEMORY
+ 194   1      
+ 195   1      
+ 196   1      /* +CMGR: "REC UNREAD","+919039344372",,"11/07/05,11:19:41+22 
+ 197   1              
+ 198   1              FON */
+ 199   1      
+ 200   1      
+ 201   1              delay_ms(500);
+ 202   1              l=0;
+ 203   1              while(buff[l++] != ',');        //WAITING FOR FIRST ','
+ 204   1              cmd_lcd(0x01);
+ 205   1              display_lcd("CELL NO : ");
+ 206   1              cmd_lcd(0xC0);
+ 207   1              l = l+4;//REMOVE THE "+91
+ 208   1              k=0;
+ 209   1              while(buff[l] != '"')
+ 210   1              {
+ 211   2                      phone1[k++]=buff[l++]; //SAVING PHONE NUMBER IN THE PHONE ARRAY 
+ 212   2              }
+ 213   1              phone1[k]='\0';
+ 214   1              display_lcd(phone1);
+ 215   1              delay_ms(500);
+ 216   1              l++;
+ 217   1              while(buff[l++] != '"');//END OF PHGONE NUMBER
+ 218   1              //cmd_lcd(0x01);
+ 219   1              //cmd_lcd(0xC0);
+ 220   1              while(buff[l] != ',')//AFTER PHONE NUMBER
+ 221   1              (buff[l++]);
+*** WARNING C275 IN LINE 221 OF GSM.C: expression with possibly no effect
+ 222   1              while(buff[l++] != ',');
+ 223   1              //cmd_lcd(0x01);
+ 224   1              //cmd_lcd(0xC0);
+ 225   1              while(buff[l] != '"') //FINAL 
+ 226   1              (buff[l++]);
+*** WARNING C275 IN LINE 226 OF GSM.C: expression with possibly no effect
+ 227   1              l = l+3;
+ 228   1      
+ 229   1              cmd_lcd(0x01);
+ 230   1              display_lcd("MESSAGE IS : ");
+ 231   1      
+ 232   1      
+ 233   1              if(buff[l]=='F' && buff[l+1]=='O' && buff[l+2]=='N' ) //FON
+ 234   1              {
+ 235   2                      cmd_lcd(0xC0);
+ 236   2                      data_lcd(buff[l]);
+ 237   2                      data_lcd(buff[l+1]);
+ 238   2                      data_lcd(buff[l+2]);
+ 239   2                      delay_ms(100);
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 5   
+
+ 240   2                      return 1;
+ 241   2              }
+ 242   1      
+ 243   1              else if(buff[l]=='F' && buff[l+1]=='O' && buff[l+2]=='F' && buff[l+3]=='F' ) //FOFF
+ 244   1              {
+ 245   2                      cmd_lcd(0xC0);
+ 246   2                      data_lcd(buff[l]);
+ 247   2                      data_lcd(buff[l+1]);
+ 248   2                      data_lcd(buff[l+2]);
+ 249   2                      data_lcd(buff[l+3]);
+ 250   2                      delay_ms(100);
+ 251   2                      return 2;
+ 252   2              }
+ 253   1      
+ 254   1              else if(buff[l]=='B' && buff[l+1]=='O' && buff[l+2]=='N' ) //BON
+ 255   1              {
+ 256   2                      cmd_lcd(0xC0);
+ 257   2                      data_lcd(buff[l]);
+ 258   2                      data_lcd(buff[l+1]);
+ 259   2                      data_lcd(buff[l+2]);
+ 260   2                      delay_ms(100);
+ 261   2                      return 3;
+ 262   2              }
+ 263   1      
+ 264   1              else if(buff[l]=='B' && buff[l+1]=='O' && buff[l+2]=='F' && buff[l+3]=='F' ) //BOFF
+ 265   1              {
+ 266   2                      cmd_lcd(0xC0);
+ 267   2                      data_lcd(buff[l]);
+ 268   2                      data_lcd(buff[l+1]);
+ 269   2                      data_lcd(buff[l+2]);
+ 270   2                      data_lcd(buff[l+3]);
+ 271   2                      delay_ms(100);
+ 272   2                      return 4;
+ 273   2              }
+ 274   1              else
+ 275   1                      return 0;
+ 276   1      }
+ 277          
+ 278          
+ 279          /**GSM INITIALIZATION FUNCTION**/
+ 280          void gsm_init() //GSM INITIALIZATION FUNCTION
+ 281          {
+ 282   1              cmd_lcd(0x01);
+ 283   1              cmd_lcd(0x80);
+ 284   1              display_lcd("GSM TESTING"); // DISPLAY PREDEFINED STRING ON LCD
+ 285   1              delay_ms(100);
+ 286   1              cmd_lcd(0x01);
+ 287   1              display_lcd("INITIALIZING...."); // DISPLAY PREDEFINED STRING ON LCD
+ 288   1              i = 0;
+ 289   1              print("AT\r\n");
+ 290   1              delay_ms(300);
+ 291   1              print("AT+CMGF=1\r\n"); // TEXT MESSAGE FORMAT
+ 292   1              delay_ms(100);
+ 293   1              print("ATE0\r\n"); // ECHO OFF
+ 294   1              delay_ms(100);
+ 295   1              sucess = 0;
+ 296   1              do{
+ 297   2                      strcpy(buff," ");
+ 298   2                      r_flag = 0;
+ 299   2                      i = 0;
+ 300   2                      print("AT+CMGD=1\r\n"); // delete first message in the SIM memory
+ 301   2                      while(i <= 2);
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 6   
+
+ 302   2                      delay_ms(100);
+ 303   2                      delay_ms(100);
+ 304   2                      l = 0;
+ 305   2                      while(buff[l] != '\0')
+ 306   2                      {
+ 307   3                              if(buff[l++] == 'O')
+ 308   3                              sucess = 1;
+ 309   3                      }
+ 310   2                      delay_ms(100);
+ 311   2                      }while(sucess != 1);
+ 312   1      }
+ 313          
+ 314          /**SENDING SMS FUNCTION**/
+ 315          void send_sms(unsigned char *p,unsigned char *d)                
+ 316          {
+ 317   1                      cmd_lcd(0x01);
+ 318   1                      display_lcd("sending sms..");   // DISPLAY PREDEFINED STRING ON LCD
+ 319   1                      print("AT+CMGS=");//FOR SEND MESSAGE
+ 320   1                      SEND_CHR('"');
+ 321   1                      print(p);  // ENTER PHONE NUMBER
+ 322   1                      SEND_CHR('"');
+ 323   1                      print("\r\n");
+ 324   1                      delay_ms(2);
+ 325   1                      print(d);  // ENTER MESSAGE 
+ 326   1      
+ 327   1                      SEND_CHR(0x1A); // Ctrl+Z
+ 328   1                      SEND_CHR(0x1A);
+ 329   1      }
+ 330          
+ 331          /**CHARACTER SENDING FUNCTION**/
+ 332          void SEND_CHR(unsigned char c) 
+ 333          {
+ 334   1              flag = 0;
+ 335   1              SBUF = c;
+ 336   1              while(flag == 0);
+ 337   1      }
+ 338          
+ 339          
+ 340          /**STRING SEND FUNCTION**/
+ 341          void print(char *str)
+ 342          {
+ 343   1              while(*str)
+ 344   1              {
+ 345   2                      flag = 0;
+ 346   2                      SBUF = *str++;
+ 347   2                      while(flag == 0);
+ 348   2              }
+ 349   1      }
+ 350          
+ 351          
+ 352          
+ 353          /**LCD INITIALIZATION FUNCTION**/
+ 354          void init_lcd(void)
+ 355          {
+ 356   1              cmd_lcd(0x02);//RETURN HOME
+ 357   1              cmd_lcd(0x28);//4BIT MODE
+ 358   1              cmd_lcd(0x0C);//DISPLAY ON CURSOR OFF
+ 359   1              cmd_lcd(0x06);//SHIFT CURSOR TO RIGHT
+ 360   1              cmd_lcd(0x01);//CLEAR SCREEN
+ 361   1      }
+ 362          
+ 363          /**LCD COMMAND FUNCTION**/
+C51 COMPILER V7.08   GSM                                                                   12/21/2013 10:39:49 PAGE 7   
+
+ 364          void cmd_lcd(unsigned char var)
+ 365          {
+ 366   1              LCD = ((var & 0xF0) | 0x08);//RS=0,EN=1
+ 367   1              LCD = 0;
+ 368   1              LCD = ((var << 4) | 0x08);//RS=0,EN=1
+ 369   1              LCD = 0;
+ 370   1              delay_ms(2);
+ 371   1      }
+ 372          
+ 373          /**LCD DATA FUNCTION**/
+ 374          void data_lcd(unsigned char var)
+ 375          {
+ 376   1              LCD = ((var & 0xF0) | 0x0a); //RS=1,EN=1
+ 377   1              LCD = 0;
+ 378   1              LCD = ((var << 4) | 0x0a); //RS=1,EN=1
+ 379   1              LCD = 0;
+ 380   1              delay_ms(2);
+ 381   1      }
+ 382          
+ 383          /**LCD STRING FUNCTION**/
+ 384          void display_lcd(char *str)
+ 385          {
+ 386   1              while(*str)
+ 387   1              data_lcd(*str++);
+ 388   1      }
+ 389          
+ 390          /**MILLISECOND DELAY FUNCTION**/
+ 391          void delay_ms(int cnt)
+ 392          {
+ 393   1              int i;
+ 394   1              while(cnt--)
+ 395   1              for(i=0;i<400;i++);
+ 396   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1456    ----
+   CONSTANT SIZE    =    359    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     18      14
+   IDATA SIZE       =    150    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

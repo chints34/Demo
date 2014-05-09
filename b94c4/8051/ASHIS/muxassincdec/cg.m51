@@ -1,0 +1,82 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/19/2013  14:38:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\ISP'S\SP_ISP\bin\Debug\ASS2.obj TO C:\ISP'S\SP_ISP\bin\Debug\cg PRINT (.\cg.m51) RAMSIZE (25
+>> 6)
+
+
+INPUT MODULES INCLUDED:
+  C:\ISP'S\SP_ISP\bin\Debug\ASS2.obj (ASS2)
+
+
+LINK MAP OF MODULE:  C:\ISP'S\SP_ISP\bin\Debug\cg (ASS2)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0027H     ABSOLUTE     
+            CODE    0027H     002EH     UNIT         DELAY_ROUTINES
+            CODE    0055H     0028H     UNIT         LUT_SEG
+
+
+
+SYMBOL TABLE OF MODULE:  C:\ISP'S\SP_ISP\bin\Debug\cg (ASS2)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ASS2
+  C:0027H         SEGMENT       DELAY_ROUTINES
+  C:0055H         SEGMENT       LUT_SEG
+  C:0005H         SYMBOL        AGAIN
+  C:001AH         SYMBOL        AGAIN2
+  C:001DH         SYMBOL        AGAIN3
+  C:001FH         SYMBOL        AGAIN4
+  D:00F0H         SYMBOL        B
+  C:0030H         SYMBOL        DELAY100MS
+  C:0027H         SYMBOL        DELAY1MS
+  C:0040H         SYMBOL        DELAY1S
+  C:005FH         SYMBOL        DISP_2_MUX_SEG
+  C:0032H         SYMBOL        L1
+  C:0042H         SYMBOL        L2
+  C:0048H         SYMBOL        L3
+  C:0000H         SYMBOL        MAIN
+  D:0080H         SYMBOL        P0
+  D:00A0H         SYMBOL        P2
+  D:00B0H         SYMBOL        P3
+  D:0080H         SYMBOL        SEG_2_MUX
+  C:0055H         SYMBOL        SEG_LUT
+  B:00A0H.0       SYMBOL        SEL1
+  B:00A0H.1       SYMBOL        SEL2
+  B:00B0H.0       SYMBOL        SW1
+  B:00B0H.1       SYMBOL        SW2
+  C:0000H         LINE#         7
+  C:0003H         LINE#         8
+  C:0005H         LINE#         10
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/19/2013  14:38:07  PAGE 2
+
+
+  C:0007H         LINE#         11
+  C:000AH         LINE#         12
+  C:000DH         LINE#         13
+  C:000EH         LINE#         14
+  C:0010H         LINE#         15
+  C:0012H         LINE#         17
+  C:0015H         LINE#         18
+  C:0018H         LINE#         19
+  C:001AH         LINE#         20
+  C:001DH         LINE#         23
+  C:001FH         LINE#         25
+  C:0021H         LINE#         26
+  C:0023H         LINE#         27
+  C:0025H         LINE#         28
+  -------         ENDMOD        ASS2
+
+Program Size: data=8.0 xdata=0 code=125
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

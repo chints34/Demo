@@ -1,0 +1,5 @@
+"clock.obj",
+"delay.obj",
+"lcd.obj" 
+TO "ass5hrsminssecs" 
+RAMSIZE(256) 

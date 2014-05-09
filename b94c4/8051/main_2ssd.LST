@@ -1,0 +1,109 @@
+A51 MACRO ASSEMBLER  MAIN_2SSD                                                            03/10/2002 08:26:39 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN C:\ISP'S\SP_ISP\bin\Debug\main_2ssd.obj
+ASSEMBLER INVOKED BY: C:\Keil2\C51\BIN\A51.EXE main_2ssd.asm SET(SMALL) DEBUG OBJECT(C:\ISP'S\SP_ISP\bin\Debug\main_2ssd
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;$include (DELAY.ASM)
+                +1     2     DELAY_ROUTINES SEGMENT CODE
+----            +1     3     RSEG DELAY_ROUTINES
+0000            +1     4     DELAY1MS:
+0000 7EFF       +1     5     MOV R6,#255
+0002 DEFE       +1     6     DJNZ R6,$
+0004 7EF2       +1     7     MOV R6,#242
+0006 DEFE       +1     8     DJNZ R6,$
+0008 22         +1     9     RET
+0009            +1    10     DELAY100MS:
+0009 7F63       +1    11     MOV R7,#99
+000B            +1    12     L1:
+000B 1100     F +1    13     ACALL DELAY1MS
+000D DFFC       +1    14     DJNZ R7,L1
+000F 7FFF       +1    15     MOV R7,#255
+0011 DFFE       +1    16     DJNZ R7,$
+0013 7F8E       +1    17     MOV R7,#142
+0015 DFFE       +1    18     DJNZ R7,$
+0017 00         +1    19     NOP
+0018 22         +1    20     RET
+                +1    21     
+                      22     
+                      23     ;$include (SEG_2.ASM)
+                +1    24     
+                +1    25     SEVSEG SEGMENT CODE
+----            +1    26     RSEG SEVSEG
+0000 40         +1    27     SEG_LUT:DB 40H;0
+0001 79         +1    28             DB 79H;1
+0002 24         +1    29             DB 24H;2
+0003 30         +1    30             DB 30H;3
+0004 19         +1    31             DB 19H;4
+0005 12         +1    32             DB 12H;5
+0006 02         +1    33             DB 02H;6
+0007 78         +1    34             DB 78H;7
+0008 00         +1    35             DB 00H;8
+  0080          +1    36     SEG1 EQU P0
+  00A0          +1    37     SEG2 EQU P2
+0009            +1    38     DISP_2_SEGS:
+0009 EC         +1    39     MOV A,R4;2-digit decimel
+000A 75F00A     +1    40     MOV B,#10
+000D 84         +1    41     DIV AB;DIVIDE BY 10,A=Q,B=R
+000E 93         +1    42     MOVC A,@A+DPTR
+000F F580       +1    43     MOV SEG1,A
+0011 E5F0       +1    44     MOV A,B
+0013 93         +1    45     MOVC A,@A+DPTR
+0014 F5A0       +1    46     MOV SEG2,A
+0016 22         +1    47     RET
+                      48     
+----                  49     CSEG AT 0
+0000                  50     MAIN:
+0000 900000   F       51     MOV DPTR,#SEG_LUT
+0003 7C00             52     MOV R4,#0
+0005                  53     AGAIN:
+0005 1100     F       54     ACALL DISP_2_SEGS
+                      55     
+0007 1100     F       56     ACALL DELAY100MS
+0009 1100     F       57     ACALL DELAY100MS
+A51 MACRO ASSEMBLER  MAIN_2SSD                                                            03/10/2002 08:26:39 PAGE     2
+
+000B 1100     F       58     ACALL DELAY100MS
+000D 1100     F       59     ACALL DELAY100MS
+000F 1100     F       60     ACALL DELAY100MS
+0011 1100     F       61     ACALL DELAY100MS
+0013 1100     F       62     ACALL DELAY100MS
+0015 1100     F       63     ACALL DELAY100MS
+0017 1100     F       64     ACALL DELAY100MS
+                      65     
+0019 0C               66     INC R4
+001A BC3CE8           67     CJNE R4,#60,AGAIN
+001D 80E1             68     SJMP MAIN
+                      69     END
+A51 MACRO ASSEMBLER  MAIN_2SSD                                                            03/10/2002 08:26:39 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   0005H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+DELAY100MS . . . .  C ADDR   0009H   R   SEG=DELAY_ROUTINES
+DELAY1MS . . . . .  C ADDR   0000H   R   SEG=DELAY_ROUTINES
+DELAY_ROUTINES . .  C SEG    0019H       REL=UNIT
+DISP_2_SEGS. . . .  C ADDR   0009H   R   SEG=SEVSEG
+L1 . . . . . . . .  C ADDR   000BH   R   SEG=DELAY_ROUTINES
+MAIN . . . . . . .  C ADDR   0000H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SEG1 . . . . . . .  D ADDR   0080H   A   
+SEG2 . . . . . . .  D ADDR   00A0H   A   
+SEG_LUT. . . . . .  C ADDR   0000H   R   SEG=SEVSEG
+SEVSEG . . . . . .  C SEG    0017H       REL=UNIT
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

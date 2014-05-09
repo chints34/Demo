@@ -1,0 +1,53 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/06/2013  08:58:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\ISP'S\leduseswitch.obj TO C:\ISP'S\LED1HEX PRINT (.\LED1HEX.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  C:\ISP'S\leduseswitch.obj (LEDUSESWITCH)
+
+
+LINK MAP OF MODULE:  C:\ISP'S\LED1HEX (LEDUSESWITCH)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     000EH     ABSOLUTE     
+            CODE    000EH     0019H     UNIT         DELAY_ROUTINES
+
+
+
+SYMBOL TABLE OF MODULE:  C:\ISP'S\LED1HEX (LEDUSESWITCH)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LEDUSESWITCH
+  C:000EH         SEGMENT       DELAY_ROUTINES
+  C:0002H         SYMBOL        BACK
+  C:0017H         SYMBOL        DELAY100MS
+  C:000EH         SYMBOL        DELAY1MS
+  C:0007H         SYMBOL        DONE
+  C:0019H         SYMBOL        L1
+  D:0090H         SYMBOL        LED
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  B:00A0H.0       SYMBOL        SW
+  C:0000H         LINE#         5
+  C:0002H         LINE#         7
+  C:0005H         LINE#         8
+  C:0007H         LINE#         10
+  C:0008H         LINE#         11
+  C:000AH         LINE#         12
+  C:000CH         LINE#         13
+  -------         ENDMOD        LEDUSESWITCH
+
+Program Size: data=8.0 xdata=0 code=39
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

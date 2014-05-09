@@ -1,0 +1,475 @@
+// make fix response string.
+// this string fill into rcv_stg array and also set r_s received count value at different switch event.
+// this indicate message received from GSM module also set timeout val.
+
+// decode this message and process it and take action according to that.
+// also send back response to same no.
+
+#include "16f877A.h"
+#include "string.h"
+#fuses HS,NOWDT,PROTECT,NOLVP
+#use Delay(Clock=20000000)
+#use rs232(baud=9600,xmit=PIN_C6,rcv=PIN_C7)
+
+
+////////////////////////////////////////////////////////////////////////////////
+///                         DEFINE PINS AND CONSTANT                         ///
+////////////////////////////////////////////////////////////////////////////////
+#define        RS                   PIN_E2
+#define        RW                   PIN_E1
+#define        EN                   PIN_E0
+
+#define        RL1                  PIN_D1
+#define        RL2                  PIN_D2
+#define        RL3                  PIN_D3
+#define        RL4                  PIN_D4   
+#define        RL5                  PIN_D5
+
+#define        SW1                  PIN_A1
+#define        SW2                  PIN_A2
+#define        SW3                  PIN_A3
+#define        SW4                  PIN_A4 
+
+///////////////////////////////////////////////////////////////////////////////// 
+//                               DEFINE VARIABLE                              //                                      
+////////////////////////////////////////////////////////////////////////////////
+unsigned char  i;
+//int8           snd_k=0;  
+char           rcv_stg[60]; 
+int8           r_s;
+//int1           snd_msg=0;
+int1           rec_msg=0;
+int1           rec_Resp_Fail=0;
+//char           rec_unt[10];
+int8           Rec_Char_TmOut=0;
+int16          Rec_Resp_TmOut=0;
+int8           g_phn_no[14]={0};
+
+const char     welcome[16]       =  {' ',' ',' ',' ','W','E','L','C','O','M','E',' ',' ',' ',' ',' '};
+const char     Hm_auto[16]       =  {'H','O','M','E',' ','A','U','T','O','M','A','T','I','O','N',' '};
+
+
+const char     RespOk[]          =  "OK";
+const char     Respcmgs[]        =  "+CMGS: 124";
+const char     Respcomma[]       =  ">";
+const char     Respcmton1[]      =  "+CMT: \"+919999989891\",,\"13/04/03,23:18:29+22\"\r\n123401";   // '"'-6,20,44, msg start from-47
+const char     Respcmton2[]      =  "+CMT: \"+919999989892\",,\"13/04/03,23:18:29+22\"\r\n123402";
+const char     Respcmton3[]      =  "+CMT: \"+919999989893\",,\"13/04/03,23:18:29+22\"\r\n123403";
+const char     Respcmton4[]      =  "+CMT: \"+919999989894\",,\"13/04/03,23:18:29+22\"\r\n123404";
+const char     Respcmton5[]      =  "+CMT: \"+919999989895\",,\"13/04/03,23:18:29+22\"\r\n123405";
+const char     Respcmtonall[]    =  "+CMT: \"+919999989896\",,\"13/04/03,23:18:29+22\"\r\n123400";
+const char     Respcmtof1[]      =  "+CMT: \"+919999989891\",,\"13/04/03,23:18:29+22\"\r\n123411";   // '"'-6,20,44, msg start from-47
+const char     Respcmtof2[]      =  "+CMT: \"+919999989892\",,\"13/04/03,23:18:29+22\"\r\n123412";
+const char     Respcmtof3[]      =  "+CMT: \"+919999989893\",,\"13/04/03,23:18:29+22\"\r\n123413";
+const char     Respcmtof4[]      =  "+CMT: \"+919999989894\",,\"13/04/03,23:18:29+22\"\r\n123414";
+const char     Respcmtof5[]      =  "+CMT: \"+919999989895\",,\"13/04/03,23:18:29+22\"\r\n123415";
+const char     Respcmtofall[]    =  "+CMT: \"+919999989896\",,\"13/04/03,23:18:29+22\"\r\n123410";
+char           Compcmt[]         =  "+CMT:";
+//const char     Respmsg[]           =  "1234 Ok 01";
+//const char     Resp6[]           =  "+CMT: \"+919601300817\",,\"13/04/03,23:47:15+22\"";
+//const char     Resp7[]           =  "1234 Ok 11";
+
+  
+////////////////////////////////////////////////////////////////////////////////
+///                              INTERRUPT ROUTINE                           ///
+////////////////////////////////////////////////////////////////////////////////  
+
+#int_timer1                                                 // count how many time timer is overflow, 5 ms
+void tmr1()
+{     
+   set_timer1(0xF3CB);
+   if(Rec_Char_TmOut)
+   {
+      Rec_Char_TmOut--;
+      if(Rec_Char_TmOut==0)
+      rec_msg=1;                 // msg received.
+   }
+   
+   if(Rec_Resp_TmOut)
+   {
+      Rec_Resp_TmOut--;
+      if(Rec_Resp_TmOut==0)
+      rec_Resp_Fail=1;                 // msg received.
+   }
+}
+
+ 
+#INT_RDA
+void Rx_data()
+{
+    rcv_stg[r_s++]=getc();
+    Rec_Char_TmOut=10;                                      // 50ms
+}
+
+
+/*
+#INT_RDA
+void Rx_data()
+{
+   // receive message and fill into array.
+   // process that message (password, mobile no., action-5 relays)
+   // compare password
+   // if match decode message and take action according to message
+   // send back message to sender.(on same number)
+   rcv_stg[r_s]=getc();
+   if(r_s==0)
+   {            
+      if(rcv_stg[0]=='+');  
+      else
+      {
+         stp1=1;   
+      }
+   }
+   else if(r_s==1)
+   {
+      if(rcv_stg[1]=='C');                        
+      else
+      {
+         stp1=1;      
+      }
+   }
+   else if(r_s==2)
+   {
+      if(rcv_stg[2]=='M');                         
+      else
+      {
+         stp1=1;      
+      }
+   }
+   else if(r_s==3)
+   {
+      if(rcv_stg[3]=='G'); 
+      else if(rcv_stg[3]=='T');
+      else
+      {
+         stp1=1;      
+      }
+   }
+   else if(r_s==4)
+   {
+      if(rcv_stg[4]=='S')snd_msg=1;                      // msg send ok. 
+      else if(rcv_stg[4]==':')rec_msg=1;                 // msg received.
+      else
+      {
+         stp1=1;      
+      }
+   }
+   else if(r_s>=47 && r_s<=53)                           // this is message
+   {
+      rec_unt[r_s-47]=rcv_stg[r_s];  
+   }
+      
+   r_s++;
+   if(stp1==1)                                           // if wrong data received.
+   {
+      r_s=0;
+      stp1=0;
+   }
+   if(r_s>=12 && snd_msg==1)r_s=0;
+   if(r_s>=60 && rec_msg==1)r_s=0;
+}
+*/
+   
+////////////////////////////////////////////////////////////////////////////////
+///                  SEND LCD COMMAND AND SINGLE BYTE DATA                   ///
+////////////////////////////////////////////////////////////////////////////////
+void lcd_cmnd_sngl_data(int1 cmnd_data,char value)
+{
+   if(cmnd_data)OUTPUT_HIGH(RS);
+   else OUTPUT_LOW(RS);
+   
+   OUTPUT_B(value); 
+   OUTPUT_HIGH(EN);
+   delay_ms(1);
+   OUTPUT_LOW(EN);
+   delay_ms(1);
+}
+   
+
+////////////////////////////////////////////////////////////////////////////////
+///                            LCD INITIALIZATION                            ///
+//////////////////////////////////////////////////////////////////////////////// 
+void lcd_init(void)
+{     
+   lcd_cmnd_sngl_data(0,0x38);
+   lcd_cmnd_sngl_data(0,0x01);
+   lcd_cmnd_sngl_data(0,0x0c);
+   lcd_cmnd_sngl_data(0,0x80);
+}
+                                 
+
+
+
+
+void WaitForResp(void)
+{
+   Rec_Resp_TmOut=1000;                                  // 5ms --> 5000ms   
+      
+   while(rec_msg==0 && Rec_Resp_TmOut)                   // wait upto Response Received or Timeout 
+   {
+      if(!input(SW1) || !input(SW2) || !input(SW3) || !input(SW4))
+      {
+         rec_msg=1;
+         if(!input(SW1))
+         {
+            strcopy(rcv_stg,RespOk);            
+            printf("Rec OK");
+         }
+         else if(!input(SW2))
+         {
+            strcopy(rcv_stg,Respcmgs);            
+            printf("Rec CMGS");
+         }
+         else if(!input(SW3))
+         {
+            strcopy(rcv_stg,Respcmton1);            
+            printf("Rec CMT");
+         }
+         else if(!input(SW4))
+         {
+            strcopy(rcv_stg,Respcomma);            
+            printf("SW COMMA");
+         }
+      }
+      delay_ms(200);
+   }
+   rec_msg=0;
+}
+
+void DecodeMsg()
+{
+   char *msgptr;   
+   int8 Stpos=0,Endpos=0,pos;
+   
+   msgptr=strchr(&rcv_stg[0],'"');
+   Stpos=msgptr-rcv_stg;
+   printf("\"POS\"=%d\r\n",Stpos);
+   
+   msgptr=strchr(&rcv_stg[Stpos+1],'"');
+   Endpos=msgptr-rcv_stg;
+   printf("\"POS\"=%d\r\n",Endpos);
+   
+   printf("Phone No:");
+   for(pos=Stpos+1;pos<Endpos;pos++)                                                         // store phone no for sending message to same number
+   {
+      g_phn_no[pos-Stpos-1]=rcv_stg[pos];
+      printf("%c",g_phn_no[pos-Stpos-1]);
+   } 
+   g_phn_no[pos-Stpos-1]='\0';
+  
+   /*
+   msgptr=strchr(&rcv_stg[Endpos+1],'"');
+   Stpos=msgptr-rcv_stg;
+   printf("\"POS\"=%d\r\n",Stpos);
+   
+   msgptr=strchr(&rcv_stg[Stpos+1],'"');
+   Endpos=msgptr-rcv_stg;
+   printf("\"POS\"=%d\r\n",Endpos);
+   */
+   
+   msgptr=strchr(&rcv_stg[Endpos+1],'\n');
+   Stpos=msgptr-rcv_stg;   
+   printf("\"POS\"=%d\r\n",Stpos);
+   
+   printf("%c",g_phn_no[pos-Stpos-1]);
+   if(rcv_stg[Stpos+1]=='1' && rcv_stg[Stpos+2]=='2' && rcv_stg[Stpos+3]=='3' && rcv_stg[Stpos+4]=='4')
+   {
+      printf("Password OK\r\n");
+      if(rcv_stg[Stpos+5]=='0')                                                  // This req for device on.
+      {
+         switch(rcv_stg[Stpos+6])                                                // this indicate which device we want to operate.
+         {
+            case '0':                                                            // all devices                                                     
+               output_high(RL1);
+               output_high(RL2);
+               output_high(RL3);
+               output_high(RL4);
+               output_high(RL5);
+            break;
+            
+            case '1':                                                            // device1
+               output_high(RL1);
+            break;
+            
+            case '2':                                                            // device2
+               output_high(RL2);
+            break;
+            
+            case '3':                                                            // device3
+               output_high(RL3);
+            break;
+            
+            case '4':                                                            // device4
+               output_high(RL4);
+            break;
+            
+            case '5':                                                            // device5
+               output_high(RL5);
+            break;
+         }
+      }
+      else if(rcv_stg[Stpos+5]=='1')                                             // This req for device off.    
+      {
+         switch(rcv_stg[Stpos+6])                                                // this indicate which device we want to operate.                                               
+         {
+            case '0':                                                            // all devices                                                     
+               output_low(RL1);
+               output_low(RL2);
+               output_low(RL3);
+               output_low(RL4);
+               output_low(RL5);
+            break;
+            
+            case '1':                                                            // device1
+               output_low(RL1);
+            break;
+            
+            case '2':                                                            // device2
+               output_low(RL2);
+            break;
+            
+            case '3':                                                            // device3
+               output_low(RL3);
+            break;
+            
+            case '4':                                                            // device4
+               output_low(RL4);
+            break;
+            
+            case '5':                                                            // device5
+               output_low(RL5);
+            break;
+         }
+      }
+   }
+}
+
+
+void MessageProcess(void)
+{
+   /*int8 iii=0;
+   // here decode messages
+   while(rcv_stg[iii])
+   {
+      putc(rcv_stg[iii]);
+      iii++;
+   }
+   putc('\r');
+   putc('\n');
+   
+   iii=0;
+   while(Compcmt[iii])
+   {
+      putc(Compcmt[iii]);
+      iii++;
+   }
+   putc('\r');
+   putc('\n');
+   
+   */
+   
+   if(strncmp(Compcmt,rcv_stg,strlen(Compcmt))==0)
+   {       
+       // here compare password and decode and take action according to that
+       DecodeMsg();
+       //printf("AT+CMGS=\"9978536595\"\r");
+       printf("AT+CMGS=\"%s\"\r",g_phn_no);
+       WaitForResp();
+       printf("Operate Success");
+       //printf("Message Send Fine=0\r\n");
+       putc(0x1a);
+   }
+   // if message read first compare password after that take action if password is correct.
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///                               MAIN FUNCTION                              ///
+//////////////////////////////////////////////////////////////////////////////// 
+void main()
+{  
+   int8 Msg_Rec_Count=0;
+
+   SET_TRIS_A(0x1E);
+   SET_TRIS_C(0x00);
+   SET_TRIS_D(0x00);
+   SET_TRIS_E(0x00);    
+   
+   OUTPUT_D(0x00); 
+   
+   r_s=0;                                                   // for reject garbage value.      
+  
+   lcd_init(); 
+                                            
+   lcd_cmnd_sngl_data(0,0x80);                              // Message Printing WELCOME.
+   for(i=0;i<16;i++)
+   lcd_cmnd_sngl_data(1,welcome[i]);
+                                           
+   lcd_cmnd_sngl_data(0,0x0c0);                             // Message Printing Attandence system
+   for(i=0;i<16;i++)  
+   lcd_cmnd_sngl_data(1,Hm_auto[i]);
+   
+   delay_ms(1000);  
+   
+   setup_timer_1(T1_INTERNAL | T1_DIV_BY_8 );               // Start timer 1, increment every 1.6us
+   set_timer1(0xF3CB);                                      // 3125 count,3125*1.6,every 5 ms
+   
+   enable_interrupts(INT_TIMER1);     
+   
+   enable_interrupts(INT_RDA);                              // set interrupt when received data is available
+   enable_interrupts(GLOBAL);  
+  /* 
+   // send Device power on message 
+   printf ("AT+CMGF=1\r");                                 // send msg
+   WaitForResp();
+   printf("AT+CNMI=1,2,0,0,0\r");
+   WaitForResp();
+   printf("AT+CMGS=\"9978536595\"\r");
+   WaitForResp();
+   printf("Device Power ON");
+   putc(0x1a);
+     */
+   while(TRUE)
+   {                   
+      if(!input(SW3) || !input(SW4))
+      {
+         rec_msg=1;
+         if(!input(SW3))
+         {
+            if(Msg_Rec_Count==0)strcopy(rcv_stg,Respcmton1);
+            else if(Msg_Rec_Count==1)strcopy(rcv_stg,Respcmton2);
+            else if(Msg_Rec_Count==2)strcopy(rcv_stg,Respcmton3);
+            else if(Msg_Rec_Count==3)strcopy(rcv_stg,Respcmton4);
+            else if(Msg_Rec_Count==4)strcopy(rcv_stg,Respcmton5);            
+            else if(Msg_Rec_Count==5)strcopy(rcv_stg,Respcmtofall);
+            else if(Msg_Rec_Count==6)strcopy(rcv_stg,Respcmtonall);
+            else if(Msg_Rec_Count==7)strcopy(rcv_stg,Respcmtof1);
+            else if(Msg_Rec_Count==8)strcopy(rcv_stg,Respcmtof2);
+            else if(Msg_Rec_Count==9)strcopy(rcv_stg,Respcmtof3);
+            else if(Msg_Rec_Count==10)strcopy(rcv_stg,Respcmtof4);
+            else if(Msg_Rec_Count==11)strcopy(rcv_stg,Respcmtof5);
+            
+            printf("Rec CMT\r\n");
+            Msg_Rec_Count++;
+            if(Msg_Rec_Count>=12)Msg_Rec_Count=0;
+         }
+         else if(!input(SW4))
+         {
+            strcopy(rcv_stg,Respcomma);            
+            printf("SW COMMA\r\n");
+         }
+         delay_ms(200);
+      } 
+      
+      if(rec_msg==1)                                     // indication of msg recevied and save received unit.
+      {
+         rec_msg=0;          
+         MessageProcess();                               // Take action acording to received message.        
+      }
+   }  
+}       
+
+
+
+
+

@@ -1,0 +1,5 @@
+Dependencies for Project 'sample', Target 'Target 1': (DO NOT MODIFY !)
+F (.\SAMPLE2.S)(0x52BC00F2)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil4\ARM\RV31\INC -I C:\Keil4\ARM\CMSIS\Include -I C:\Keil4\ARM\Inc\Philips --list "SAMPLE2.lst" --xref -o "SAMPLE2.o" --depend "SAMPLE2.d")
+F (.\store_ram.s)(0x52BC0370)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil4\ARM\RV31\INC -I C:\Keil4\ARM\CMSIS\Include -I C:\Keil4\ARM\Inc\Philips --list "store_ram.lst" --xref -o "store_ram.o" --depend "store_ram.d")
+F (.\store_ram2.S)(0x52BC03AA)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil4\ARM\RV31\INC -I C:\Keil4\ARM\CMSIS\Include -I C:\Keil4\ARM\Inc\Philips --list "store_ram2.lst" --xref -o "store_ram2.o" --depend "store_ram2.d")
+F (.\led_on_off.s)(0x52BC0B0E)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil4\ARM\RV31\INC -I C:\Keil4\ARM\CMSIS\Include -I C:\Keil4\ARM\Inc\Philips --list "led_on_off.lst" --xref -o "led_on_off.o" --depend "led_on_off.d")

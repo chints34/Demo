@@ -1,0 +1,118 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 E002C000 
+                       PINSEL0 EQU              0XE002C000
+    2 00000000 E0028004 
+                       IOSET0  EQU              0XE0028004
+    3 00000000 E0028008 
+                       IODIR0  EQU              0XE0028008
+    4 00000000 E002800C 
+                       IOCLR0  EQU              0XE002800C
+    5 00000000 00000001 
+                       LED     EQU              (1<<0)
+    6 00000000                 AREA             RESET,CODE,READONLY
+    7 00000000                 ARM
+    8 00000000                 ENTRY
+    9 00000000         MAIN
+   10 00000000 E3A00000        MOV              R0,#0
+   11 00000004 E59F1018        LDR              R1,=PINSEL0
+   12 00000008 E5810000        STR              R0,[R1]
+   13 0000000C E59F1014        LDR              R1,=IODIR0
+   14 00000010 E3A00001        MOV              R0,#LED
+   15 00000014 E5810000        STR              R0,[R1]
+   16 00000018         HERE
+   17 00000018 E59F100C        LDR              R1,=IOSET0
+   18 0000001C E5810000        STR              R0,[R1]
+   19 00000020         ;LDR R1,=IOCLR0
+   20 00000020         ;STR R0,[R1]
+   21 00000020 EAFFFFFC        B                HERE
+   22 00000024                 END
+              E002C000 
+              E0028008 
+              E0028004 
+Command Line: --debug --xref --apcs=interwork --depend=led_on_off.d -oled_on_of
+f.o -IC:\Keil4\ARM\RV31\INC -IC:\Keil4\ARM\CMSIS\Include -IC:\Keil4\ARM\Inc\Phi
+lips --predefine="__EVAL SETA 1" --list=led_on_off.lst led_on_off.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+HERE 00000018
+
+Symbol: HERE
+   Definitions
+      At line 16 in file led_on_off.s
+   Uses
+      At line 21 in file led_on_off.s
+Comment: HERE used once
+MAIN 00000000
+
+Symbol: MAIN
+   Definitions
+      At line 9 in file led_on_off.s
+   Uses
+      None
+Comment: MAIN unused
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 6 in file led_on_off.s
+   Uses
+      None
+Comment: RESET unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+IOCLR0 E002800C
+
+Symbol: IOCLR0
+   Definitions
+      At line 4 in file led_on_off.s
+   Uses
+      None
+Comment: IOCLR0 unused
+IODIR0 E0028008
+
+Symbol: IODIR0
+   Definitions
+      At line 3 in file led_on_off.s
+   Uses
+      At line 13 in file led_on_off.s
+Comment: IODIR0 used once
+IOSET0 E0028004
+
+Symbol: IOSET0
+   Definitions
+      At line 2 in file led_on_off.s
+   Uses
+      At line 17 in file led_on_off.s
+Comment: IOSET0 used once
+LED 00000001
+
+Symbol: LED
+   Definitions
+      At line 5 in file led_on_off.s
+   Uses
+      At line 14 in file led_on_off.s
+Comment: LED used once
+PINSEL0 E002C000
+
+Symbol: PINSEL0
+   Definitions
+      At line 1 in file led_on_off.s
+   Uses
+      At line 11 in file led_on_off.s
+Comment: PINSEL0 used once
+5 symbols
+341 symbols in table

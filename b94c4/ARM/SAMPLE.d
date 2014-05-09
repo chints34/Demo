@@ -1,0 +1,1 @@
+SAMPLE.o: SAMPLE.S

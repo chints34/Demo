@@ -1,0 +1,149 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/13/2013  20:00:28  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL2\C51\BIN\BL51.EXE 4mux.obj, seg.obj, delay1.obj TO int float_ssd RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  4mux.obj (4MUX)
+  seg.obj (SEG)
+  delay1.obj (DELAY1)
+  C:\KEIL2\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL2\C51\LIB\C51S.LIB (?C?UIDIV)
+  C:\KEIL2\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  int float_ssd (4MUX)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?SEG
+            DATA    000CH     0002H     UNIT         _DATA_GROUP_
+            IDATA   000EH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     00ADH     UNIT         ?PR?_DISP_4_MUX_SEGS?SEG
+            CODE    00B0H     008CH     UNIT         ?C_C51STARTUP
+            CODE    013CH     0055H     UNIT         ?C?LIB_CODE
+            CODE    0191H     0019H     UNIT         ?PR?_DELAY_1MS?DELAY1
+            CODE    01AAH     000DH     UNIT         ?C_INITSEG
+            CODE    01B7H     0009H     UNIT         ?PR?MAIN?4MUX
+            CODE    01C0H     0009H     UNIT         ?CO?SEG
+
+
+
+OVERLAY MAP OF MODULE:   int float_ssd (4MUX)
+
+
+SEGMENT                            DATA_GROUP 
+  +--> CALLED SEGMENT            START    LENGTH
+------------------------------------------------
+?C_C51STARTUP                    -----    -----
+  +--> ?PR?MAIN?4MUX
+  +--> ?C_INITSEG
+
+?PR?MAIN?4MUX                    -----    -----
+  +--> ?PR?_DISP_4_MUX_SEGS?SEG
+
+?PR?_DISP_4_MUX_SEGS?SEG         000CH    0002H
+  +--> ?CO?SEG
+  +--> ?PR?_DELAY_1MS?DELAY1
+
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/13/2013  20:00:28  PAGE 2
+
+
+
+SYMBOL TABLE OF MODULE:  int float_ssd (4MUX)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        4MUX
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:01B7H         PUBLIC        main
+  -------         PROC          MAIN
+  C:01B7H         LINE#         4
+  C:01B7H         LINE#         5
+  C:01B7H         LINE#         6
+  C:01B7H         LINE#         7
+  C:01B7H         LINE#         8
+  C:01BEH         LINE#         11
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        4MUX
+
+  -------         MODULE        SEG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        dp1
+  D:0009H         PUBLIC        dp2
+  D:000AH         PUBLIC        dp3
+  D:000BH         PUBLIC        dp4
+  B:00A0H.0       PUBLIC        sel1
+  C:0003H         PUBLIC        _disp_4_mux_segs
+  B:00A0H.1       PUBLIC        sel2
+  C:01C0H         PUBLIC        seg_lut
+  B:00A0H.2       PUBLIC        sel3
+  B:00A0H.3       PUBLIC        sel4
+  -------         PROC          _DISP_4_MUX_SEGS
+  D:000CH         SYMBOL        n
+  C:0003H         LINE#         12
+  C:0007H         LINE#         13
+  C:0007H         LINE#         14
+  C:001EH         LINE#         15
+  C:0020H         LINE#         16
+  C:0027H         LINE#         17
+  C:0029H         LINE#         19
+  C:004BH         LINE#         20
+  C:004DH         LINE#         21
+  C:0054H         LINE#         22
+  C:0056H         LINE#         24
+  C:007EH         LINE#         25
+  C:0080H         LINE#         26
+  C:0087H         LINE#         27
+  C:0089H         LINE#         29
+  C:00A4H         LINE#         30
+  C:00A6H         LINE#         31
+  C:00ADH         LINE#         32
+  C:00AFH         LINE#         34
+  -------         ENDPROC       _DISP_4_MUX_SEGS
+  -------         ENDMOD        SEG
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/13/2013  20:00:28  PAGE 3
+
+
+  -------         MODULE        DELAY1
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0191H         PUBLIC        _delay_1ms
+  -------         PROC          _DELAY_1MS
+  D:0006H         SYMBOL        dly
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0191H         LINE#         1
+  C:0191H         LINE#         2
+  C:0191H         LINE#         4
+  C:019AH         LINE#         5
+  C:019AH         LINE#         6
+  C:019EH         LINE#         7
+  C:01A2H         LINE#         8
+  C:01A9H         LINE#         9
+  -------         ENDPROC       _DELAY_1MS
+  -------         ENDMOD        DELAY1
+
+  -------         MODULE        ?C?UIDIV
+  C:013CH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=15.0 xdata=0 code=457
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

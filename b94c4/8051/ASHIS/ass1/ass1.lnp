@@ -1,0 +1,5 @@
+"seg.obj",
+"delay.obj",
+"main.obj" 
+TO "ass1" 
+RAMSIZE(256) 
