@@ -19,7 +19,7 @@ main(int argc,char **argv)
         puts("client socket created sucessfully\n");
        	
 	addr.sin_family=AF_INET;
-        addr.sin_addr.s_addr=inet_addr("127.0.0.1");
+        addr.sin_addr.s_addr=inet_addr("192.168.101.138");
         addr.sin_port=htons(atoi(argv[1]));
         puts("connecting with server...\n");
         

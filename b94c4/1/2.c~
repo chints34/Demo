@@ -1,0 +1,86 @@
+#include<linux/module.h>
+#include<linux/init.h>
+#include<linux/kernel.h>
+#include<linux/fs.h>
+#include <linux/errno.h> /* error codes */
+#include <linux/types.h> /* size_t */
+#include <linux/proc_fs.h>
+#include <linux/fcntl.h> /* O_ACCMODE */
+//#include <linux/asm/system.h> /* cli(), *_flags */
+#include <asm/uaccess.h> /* copy_from/to_user */
+//#include <linux/config.h>
+
+int major_num = 60;
+char *memory_buffer;
+
+int hello_open(struct inode *inode,struct file *filep)
+{
+printk("hello open:\n");
+}
+int hello_close(struct inode *inode,struct file *filep)
+{
+printk("hello close\n");
+}
+ssize_t hello_read(struct file *filep,char *buf,size_t count, loff_t *f_pos)
+{
+printk("hello read\n");
+
+}
+ssize_t hello_write(struct file *filep,char *buf,size_t count, loff_t *f_pos)
+{
+printk("hello write\n");
+
+}
+struct file_operation hello_fops=
+{
+open:hello_open,
+close:hello_close,
+read:hello_read,
+write:hello_write,
+
+};
+static int hello_init(void)  //constructor
+{
+/*int result;
+result = register_chrdev(major_num, "hello", &hello_fops);
+if(result<0)
+{
+printk("error in register\n");
+}
+else*/
+printk("hello inserted\n");
+  /* Allocating memory for the buffer */
+  /*memory_buffer = kmalloc(1, GFP_KERNEL); 
+  if (!memory_buffer) { 
+    result = -ENOMEM;
+    goto fail; 
+  } 
+  memset(memory_buffer, 0, 1);
+
+  printk("<1>Inserting memory module\n"); 
+  return 0;
+
+  fail: 
+    memory_exit(); 
+    return result;*/
+}
+static void hello_exit(void) //destructor
+{
+/*int result;
+result = unregister_chrdev(major_num,"hello");
+if(result<0)
+{
+printk("error in deregister\n");
+}
+else*/
+printk("hello rejected\n");
+ /* Freeing buffer memory */
+  /*if (memory_buffer) {
+    kfree(memory_buffer);
+  }
+
+  printk("<1>Removing memory module\n");
+*/}
+
+module_init(hello_init);
+module_exit(hello_exit);
