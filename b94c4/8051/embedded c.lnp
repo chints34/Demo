@@ -1,4 +1,0 @@
-"delay1.obj",
-"1msmain.obj" 
-TO "embedded c" 
-RAMSIZE(256) 

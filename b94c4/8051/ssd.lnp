@@ -1,5 +1,0 @@
-"DELAY.obj",
-"SEG_2.obj",
-"2ssd_2switch.obj" 
-TO "ssd" 
-RAMSIZE(256) 

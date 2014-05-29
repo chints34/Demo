@@ -1,5 +1,0 @@
-"timerclock.obj",
-"delay.obj",
-"lcd.obj" 
-TO "clock" 
-RAMSIZE(256) 

@@ -1,1 +1,0 @@
-SAMPLE2.o: SAMPLE2.S

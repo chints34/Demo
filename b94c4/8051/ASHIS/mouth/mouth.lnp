@@ -1,5 +1,0 @@
-"mainled.obj",
-"lcd.obj",
-"delay.obj" 
-TO "mouth" 
-RAMSIZE(256) 

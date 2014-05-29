@@ -1,9 +1,0 @@
-#include<stdio.h>
-void main(char *p)
-{
-printf("%c",*p);
-}
-main()
-{
-print("chints");
-}

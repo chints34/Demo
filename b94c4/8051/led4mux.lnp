@@ -1,5 +1,0 @@
-"seg.obj",
-"4mux.obj",
-"delay1.obj" 
-TO "led4mux" 
-RAMSIZE(256) 

@@ -1,5 +1,0 @@
-"4mux.obj",
-"seg.obj",
-"delay1.obj" 
-TO "int&float_ssd" 
-RAMSIZE(256) 
